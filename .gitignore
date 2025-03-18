@@ -1,0 +1,22 @@
+# ROS2 build and install
+build/
+install/
+log/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Model weights
+*.pt
+best.pt
+
+# Dataset
+new_dataset_tt/
+
+# Environment
+.env
+.venv
+env/
+venv/ 

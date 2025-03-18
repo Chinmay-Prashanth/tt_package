@@ -1,0 +1,233 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1
+					],
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-a07f01ab43b562a62d47.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.12"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12,
+						13,
+						14,
+						15,
+						16,
+						17
+					]
+				},
+				{
+					"build" : "yolo_msgs__py",
+					"jsonFile" : "directory-yolo_msgs__py-316076277cd48d80b2d6.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.12"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "/home/upsurge/tt_package/build/yolo_msgs/yolo_msgs__py",
+					"targetIndexes" : 
+					[
+						5
+					]
+				}
+			],
+			"name" : "",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0,
+						1
+					],
+					"name" : "yolo_msgs",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12,
+						13,
+						14,
+						15,
+						16,
+						17
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "ament_cmake_python_build_yolo_msgs_egg::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ament_cmake_python_build_yolo_msgs_egg-1f3f12eecb4feac2086b.json",
+					"name" : "ament_cmake_python_build_yolo_msgs_egg",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ament_cmake_python_copy_yolo_msgs::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ament_cmake_python_copy_yolo_msgs-747e47402c0d5a99754f.json",
+					"name" : "ament_cmake_python_copy_yolo_msgs",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-uninstall-0e449c7277b486acd5f5.json",
+					"name" : "uninstall",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "yolo_msgs::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-yolo_msgs-896b43acf13d0c5a2a41.json",
+					"name" : "yolo_msgs",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "yolo_msgs__cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-yolo_msgs__cpp-298b2ca4f88cc904d531.json",
+					"name" : "yolo_msgs__cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "yolo_msgs__py::@d8f6d8bb9369ddfb0929",
+					"jsonFile" : "target-yolo_msgs__py-fff7aeada3b3c06eaffb.json",
+					"name" : "yolo_msgs__py",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "yolo_msgs__rosidl_generator_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-yolo_msgs__rosidl_generator_c-ded64128d6611f859e72.json",
+					"name" : "yolo_msgs__rosidl_generator_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "yolo_msgs__rosidl_generator_py::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-yolo_msgs__rosidl_generator_py-9dab6d72ed2c1c3ecdc8.json",
+					"name" : "yolo_msgs__rosidl_generator_py",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "yolo_msgs__rosidl_typesupport_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-yolo_msgs__rosidl_typesupport_c-d340fa4ee98eaa186765.json",
+					"name" : "yolo_msgs__rosidl_typesupport_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "yolo_msgs__rosidl_typesupport_c__pyext::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-yolo_msgs__rosidl_typesupport_c__pyext-e66c85639c8fdcfb7209.json",
+					"name" : "yolo_msgs__rosidl_typesupport_c__pyext",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "yolo_msgs__rosidl_typesupport_cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-yolo_msgs__rosidl_typesupport_cpp-e695c40784843f1eb20e.json",
+					"name" : "yolo_msgs__rosidl_typesupport_cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "yolo_msgs__rosidl_typesupport_fastrtps_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-yolo_msgs__rosidl_typesupport_fastrtps_c-78cd8e521747ef82c94b.json",
+					"name" : "yolo_msgs__rosidl_typesupport_fastrtps_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "yolo_msgs__rosidl_typesupport_fastrtps_c__pyext::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-yolo_msgs__rosidl_typesupport_fastrtps_c__pyext-2a0eb58e4fa91e70ba58.json",
+					"name" : "yolo_msgs__rosidl_typesupport_fastrtps_c__pyext",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "yolo_msgs__rosidl_typesupport_fastrtps_cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-yolo_msgs__rosidl_typesupport_fastrtps_cpp-25b1809c6d6a31056ee4.json",
+					"name" : "yolo_msgs__rosidl_typesupport_fastrtps_cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "yolo_msgs__rosidl_typesupport_introspection_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-yolo_msgs__rosidl_typesupport_introspection_c-0dca8d49defee24a226a.json",
+					"name" : "yolo_msgs__rosidl_typesupport_introspection_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "yolo_msgs__rosidl_typesupport_introspection_c__pyext::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-yolo_msgs__rosidl_typesupport_introspection_c__pyext-564b2adaa7c443cbb0f9.json",
+					"name" : "yolo_msgs__rosidl_typesupport_introspection_c__pyext",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "yolo_msgs__rosidl_typesupport_introspection_cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-yolo_msgs__rosidl_typesupport_introspection_cpp-2e1066f5f394690fea2a.json",
+					"name" : "yolo_msgs__rosidl_typesupport_introspection_cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "yolo_msgs_uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-yolo_msgs_uninstall-9fc4295ae8b2798d3969.json",
+					"name" : "yolo_msgs_uninstall",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/upsurge/tt_package/build/yolo_msgs",
+		"source" : "/home/upsurge/tt_package/src/yolo_ros/yolo_msgs"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 3
+	}
+}

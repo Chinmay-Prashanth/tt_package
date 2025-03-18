@@ -1,0 +1,79 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-342c44b0a4ef0a5e23f8.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.12"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"name" : "",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "tt_robot_new_moveit_config",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "joint_state_converter_node::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-joint_state_converter_node-0fca6e77e05cc68ecd67.json",
+					"name" : "joint_state_converter_node",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "tt_robot_new_moveit_config_uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-tt_robot_new_moveit_config_uninstall-e22901c656462c84e557.json",
+					"name" : "tt_robot_new_moveit_config_uninstall",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-uninstall-03811e9c7b74e9eb8989.json",
+					"name" : "uninstall",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/upsurge/tt_package/build/tt_robot_new_moveit_config",
+		"source" : "/home/upsurge/tt_package/src/tt_robot_new_moveit_config"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 3
+	}
+}

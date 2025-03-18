@@ -1,0 +1,5 @@
+/home/upsurge/tt_package/build/realsense2_camera_msgs/rosidl_adapter/realsense2_camera_msgs:msg/IMUInfo.idl
+/home/upsurge/tt_package/build/realsense2_camera_msgs/rosidl_adapter/realsense2_camera_msgs:msg/Extrinsics.idl
+/home/upsurge/tt_package/build/realsense2_camera_msgs/rosidl_adapter/realsense2_camera_msgs:msg/Metadata.idl
+/home/upsurge/tt_package/build/realsense2_camera_msgs/rosidl_adapter/realsense2_camera_msgs:msg/RGBD.idl
+/home/upsurge/tt_package/build/realsense2_camera_msgs/rosidl_adapter/realsense2_camera_msgs:srv/DeviceInfo.idl

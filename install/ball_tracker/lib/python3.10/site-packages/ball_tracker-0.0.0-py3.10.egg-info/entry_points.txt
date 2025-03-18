@@ -1,0 +1,4 @@
+[console_scripts]
+ball_tracker = ball_tracker.ball_tracker:main
+ping_pong_detector = ball_tracker.ping_pong_detector:main
+ros_inference_tracker_node = ball_tracker.ros_inference_tracker_node:main

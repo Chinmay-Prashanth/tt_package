@@ -1,0 +1,49 @@
+-- The C compiler identification is GNU 11.4.0
+-- The CXX compiler identification is GNU 11.4.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Found ament_cmake: 1.3.11 (/opt/ros/humble/share/ament_cmake/cmake)
+-- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/upsurge/tt_package/build/tt_robot_new
+-- Install configuration: ""
+-- Installing: /home/upsurge/tt_package/install/tt_robot_new/share/tt_robot_new/config
+-- Installing: /home/upsurge/tt_package/install/tt_robot_new/share/tt_robot_new/config/joint_names_tt_robot_new.yaml
+-- Installing: /home/upsurge/tt_package/install/tt_robot_new/share/tt_robot_new/launch
+-- Installing: /home/upsurge/tt_package/install/tt_robot_new/share/tt_robot_new/launch/gazebo.launch
+-- Installing: /home/upsurge/tt_package/install/tt_robot_new/share/tt_robot_new/launch/display.launch
+-- Installing: /home/upsurge/tt_package/install/tt_robot_new/share/tt_robot_new/meshes
+-- Installing: /home/upsurge/tt_package/install/tt_robot_new/share/tt_robot_new/meshes/link3.STL
+-- Installing: /home/upsurge/tt_package/install/tt_robot_new/share/tt_robot_new/meshes/link1.STL
+-- Installing: /home/upsurge/tt_package/install/tt_robot_new/share/tt_robot_new/meshes/link2.STL
+-- Installing: /home/upsurge/tt_package/install/tt_robot_new/share/tt_robot_new/meshes/link5.STL
+-- Installing: /home/upsurge/tt_package/install/tt_robot_new/share/tt_robot_new/meshes/base_link.STL
+-- Installing: /home/upsurge/tt_package/install/tt_robot_new/share/tt_robot_new/meshes/link6.STL
+-- Installing: /home/upsurge/tt_package/install/tt_robot_new/share/tt_robot_new/meshes/link4.STL
+-- Installing: /home/upsurge/tt_package/install/tt_robot_new/share/tt_robot_new/urdf
+-- Installing: /home/upsurge/tt_package/install/tt_robot_new/share/tt_robot_new/urdf/tt_robot_new.csv
+-- Installing: /home/upsurge/tt_package/install/tt_robot_new/share/tt_robot_new/urdf/tt_robot_new.urdf
+-- Installing: /home/upsurge/tt_package/install/tt_robot_new/share/ament_index/resource_index/package_run_dependencies/tt_robot_new
+-- Installing: /home/upsurge/tt_package/install/tt_robot_new/share/ament_index/resource_index/parent_prefix_path/tt_robot_new
+-- Installing: /home/upsurge/tt_package/install/tt_robot_new/share/tt_robot_new/environment/ament_prefix_path.sh
+-- Installing: /home/upsurge/tt_package/install/tt_robot_new/share/tt_robot_new/environment/ament_prefix_path.dsv
+-- Installing: /home/upsurge/tt_package/install/tt_robot_new/share/tt_robot_new/environment/path.sh
+-- Installing: /home/upsurge/tt_package/install/tt_robot_new/share/tt_robot_new/environment/path.dsv
+-- Installing: /home/upsurge/tt_package/install/tt_robot_new/share/tt_robot_new/local_setup.bash
+-- Installing: /home/upsurge/tt_package/install/tt_robot_new/share/tt_robot_new/local_setup.sh
+-- Installing: /home/upsurge/tt_package/install/tt_robot_new/share/tt_robot_new/local_setup.zsh
+-- Installing: /home/upsurge/tt_package/install/tt_robot_new/share/tt_robot_new/local_setup.dsv
+-- Installing: /home/upsurge/tt_package/install/tt_robot_new/share/tt_robot_new/package.dsv
+-- Installing: /home/upsurge/tt_package/install/tt_robot_new/share/ament_index/resource_index/packages/tt_robot_new
+-- Installing: /home/upsurge/tt_package/install/tt_robot_new/share/tt_robot_new/cmake/tt_robot_newConfig.cmake
+-- Installing: /home/upsurge/tt_package/install/tt_robot_new/share/tt_robot_new/cmake/tt_robot_newConfig-version.cmake
+-- Installing: /home/upsurge/tt_package/install/tt_robot_new/share/tt_robot_new/package.xml

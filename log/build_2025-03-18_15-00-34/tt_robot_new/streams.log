@@ -1,0 +1,36 @@
+[0.008s] Invoking command in '/home/upsurge/tt_package/build/tt_robot_new': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/upsurge/tt_package/build/tt_robot_new -- -j32 -l32
+[0.125s] Invoked command in '/home/upsurge/tt_package/build/tt_robot_new' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/upsurge/tt_package/build/tt_robot_new -- -j32 -l32
+[0.131s] Invoking command in '/home/upsurge/tt_package/build/tt_robot_new': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/upsurge/tt_package/build/tt_robot_new
+[0.133s] -- Install configuration: ""
+[0.133s] -- Up-to-date: /home/upsurge/tt_package/install/tt_robot_new/share/tt_robot_new/config
+[0.133s] -- Up-to-date: /home/upsurge/tt_package/install/tt_robot_new/share/tt_robot_new/config/joint_names_tt_robot_new.yaml
+[0.133s] -- Up-to-date: /home/upsurge/tt_package/install/tt_robot_new/share/tt_robot_new/launch
+[0.133s] -- Up-to-date: /home/upsurge/tt_package/install/tt_robot_new/share/tt_robot_new/launch/gazebo.launch
+[0.133s] -- Up-to-date: /home/upsurge/tt_package/install/tt_robot_new/share/tt_robot_new/launch/display.launch
+[0.133s] -- Up-to-date: /home/upsurge/tt_package/install/tt_robot_new/share/tt_robot_new/meshes
+[0.133s] -- Up-to-date: /home/upsurge/tt_package/install/tt_robot_new/share/tt_robot_new/meshes/link3.STL
+[0.133s] -- Up-to-date: /home/upsurge/tt_package/install/tt_robot_new/share/tt_robot_new/meshes/link1.STL
+[0.134s] -- Up-to-date: /home/upsurge/tt_package/install/tt_robot_new/share/tt_robot_new/meshes/link2.STL
+[0.134s] -- Up-to-date: /home/upsurge/tt_package/install/tt_robot_new/share/tt_robot_new/meshes/link5.STL
+[0.134s] -- Up-to-date: /home/upsurge/tt_package/install/tt_robot_new/share/tt_robot_new/meshes/base_link.STL
+[0.134s] -- Up-to-date: /home/upsurge/tt_package/install/tt_robot_new/share/tt_robot_new/meshes/link6.STL
+[0.134s] -- Up-to-date: /home/upsurge/tt_package/install/tt_robot_new/share/tt_robot_new/meshes/link4.STL
+[0.134s] -- Up-to-date: /home/upsurge/tt_package/install/tt_robot_new/share/tt_robot_new/urdf
+[0.134s] -- Up-to-date: /home/upsurge/tt_package/install/tt_robot_new/share/tt_robot_new/urdf/tt_robot_new.csv
+[0.134s] -- Up-to-date: /home/upsurge/tt_package/install/tt_robot_new/share/tt_robot_new/urdf/tt_robot_new.urdf
+[0.134s] -- Up-to-date: /home/upsurge/tt_package/install/tt_robot_new/share/ament_index/resource_index/package_run_dependencies/tt_robot_new
+[0.134s] -- Up-to-date: /home/upsurge/tt_package/install/tt_robot_new/share/ament_index/resource_index/parent_prefix_path/tt_robot_new
+[0.134s] -- Up-to-date: /home/upsurge/tt_package/install/tt_robot_new/share/tt_robot_new/environment/ament_prefix_path.sh
+[0.134s] -- Up-to-date: /home/upsurge/tt_package/install/tt_robot_new/share/tt_robot_new/environment/ament_prefix_path.dsv
+[0.134s] -- Up-to-date: /home/upsurge/tt_package/install/tt_robot_new/share/tt_robot_new/environment/path.sh
+[0.134s] -- Up-to-date: /home/upsurge/tt_package/install/tt_robot_new/share/tt_robot_new/environment/path.dsv
+[0.134s] -- Up-to-date: /home/upsurge/tt_package/install/tt_robot_new/share/tt_robot_new/local_setup.bash
+[0.134s] -- Up-to-date: /home/upsurge/tt_package/install/tt_robot_new/share/tt_robot_new/local_setup.sh
+[0.134s] -- Up-to-date: /home/upsurge/tt_package/install/tt_robot_new/share/tt_robot_new/local_setup.zsh
+[0.134s] -- Up-to-date: /home/upsurge/tt_package/install/tt_robot_new/share/tt_robot_new/local_setup.dsv
+[0.134s] -- Up-to-date: /home/upsurge/tt_package/install/tt_robot_new/share/tt_robot_new/package.dsv
+[0.134s] -- Up-to-date: /home/upsurge/tt_package/install/tt_robot_new/share/ament_index/resource_index/packages/tt_robot_new
+[0.134s] -- Up-to-date: /home/upsurge/tt_package/install/tt_robot_new/share/tt_robot_new/cmake/tt_robot_newConfig.cmake
+[0.134s] -- Up-to-date: /home/upsurge/tt_package/install/tt_robot_new/share/tt_robot_new/cmake/tt_robot_newConfig-version.cmake
+[0.134s] -- Up-to-date: /home/upsurge/tt_package/install/tt_robot_new/share/tt_robot_new/package.xml
+[0.134s] Invoked command in '/home/upsurge/tt_package/build/tt_robot_new' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/upsurge/tt_package/build/tt_robot_new

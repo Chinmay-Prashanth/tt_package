@@ -1,0 +1,47 @@
+[0.343s] Invoking command in '/home/upsurge/tt_package/src/yolo_ros/yolo_ros': AMENT_PREFIX_PATH=/home/upsurge/tt_package/install/yolo_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/upsurge/tt_package/install/yolo_msgs LD_LIBRARY_PATH=/home/upsurge/tt_package/install/yolo_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/upsurge/tt_package/build/yolo_ros/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/upsurge/tt_package/install/yolo_ros/lib/python3.10/site-packages:/home/upsurge/tt_package/install/yolo_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../../build/yolo_ros build --build-base /home/upsurge/tt_package/build/yolo_ros/build install --record /home/upsurge/tt_package/build/yolo_ros/install.log --single-version-externally-managed install_data
+[0.411s] /home/upsurge/.local/lib/python3.10/site-packages/setuptools/_distutils/dist.py:270: UserWarning: Unknown distribution option: 'tests_require'
+[0.411s]   warnings.warn(msg)
+[0.455s] running egg_info
+[0.462s] creating ../../../build/yolo_ros/yolo_ros.egg-info
+[0.462s] writing ../../../build/yolo_ros/yolo_ros.egg-info/PKG-INFO
+[0.462s] writing dependency_links to ../../../build/yolo_ros/yolo_ros.egg-info/dependency_links.txt
+[0.462s] writing entry points to ../../../build/yolo_ros/yolo_ros.egg-info/entry_points.txt
+[0.462s] writing requirements to ../../../build/yolo_ros/yolo_ros.egg-info/requires.txt
+[0.462s] writing top-level names to ../../../build/yolo_ros/yolo_ros.egg-info/top_level.txt
+[0.462s] writing manifest file '../../../build/yolo_ros/yolo_ros.egg-info/SOURCES.txt'
+[0.477s] reading manifest file '../../../build/yolo_ros/yolo_ros.egg-info/SOURCES.txt'
+[0.478s] writing manifest file '../../../build/yolo_ros/yolo_ros.egg-info/SOURCES.txt'
+[0.478s] running build
+[0.478s] running build_py
+[0.478s] creating /home/upsurge/tt_package/build/yolo_ros/build/lib/yolo_ros
+[0.478s] copying yolo_ros/tracking_node.py -> /home/upsurge/tt_package/build/yolo_ros/build/lib/yolo_ros
+[0.478s] copying yolo_ros/debug_node.py -> /home/upsurge/tt_package/build/yolo_ros/build/lib/yolo_ros
+[0.478s] copying yolo_ros/yolo_node.py -> /home/upsurge/tt_package/build/yolo_ros/build/lib/yolo_ros
+[0.478s] copying yolo_ros/detect_3d_node.py -> /home/upsurge/tt_package/build/yolo_ros/build/lib/yolo_ros
+[0.478s] copying yolo_ros/__init__.py -> /home/upsurge/tt_package/build/yolo_ros/build/lib/yolo_ros
+[0.478s] running install
+[0.480s] running install_lib
+[0.487s] creating /home/upsurge/tt_package/install/yolo_ros/lib/python3.10/site-packages/yolo_ros
+[0.487s] copying /home/upsurge/tt_package/build/yolo_ros/build/lib/yolo_ros/tracking_node.py -> /home/upsurge/tt_package/install/yolo_ros/lib/python3.10/site-packages/yolo_ros
+[0.487s] copying /home/upsurge/tt_package/build/yolo_ros/build/lib/yolo_ros/debug_node.py -> /home/upsurge/tt_package/install/yolo_ros/lib/python3.10/site-packages/yolo_ros
+[0.487s] copying /home/upsurge/tt_package/build/yolo_ros/build/lib/yolo_ros/yolo_node.py -> /home/upsurge/tt_package/install/yolo_ros/lib/python3.10/site-packages/yolo_ros
+[0.487s] copying /home/upsurge/tt_package/build/yolo_ros/build/lib/yolo_ros/detect_3d_node.py -> /home/upsurge/tt_package/install/yolo_ros/lib/python3.10/site-packages/yolo_ros
+[0.487s] copying /home/upsurge/tt_package/build/yolo_ros/build/lib/yolo_ros/__init__.py -> /home/upsurge/tt_package/install/yolo_ros/lib/python3.10/site-packages/yolo_ros
+[0.487s] byte-compiling /home/upsurge/tt_package/install/yolo_ros/lib/python3.10/site-packages/yolo_ros/tracking_node.py to tracking_node.cpython-310.pyc
+[0.488s] byte-compiling /home/upsurge/tt_package/install/yolo_ros/lib/python3.10/site-packages/yolo_ros/debug_node.py to debug_node.cpython-310.pyc
+[0.489s] byte-compiling /home/upsurge/tt_package/install/yolo_ros/lib/python3.10/site-packages/yolo_ros/yolo_node.py to yolo_node.cpython-310.pyc
+[0.490s] byte-compiling /home/upsurge/tt_package/install/yolo_ros/lib/python3.10/site-packages/yolo_ros/detect_3d_node.py to detect_3d_node.cpython-310.pyc
+[0.491s] byte-compiling /home/upsurge/tt_package/install/yolo_ros/lib/python3.10/site-packages/yolo_ros/__init__.py to __init__.cpython-310.pyc
+[0.491s] running install_data
+[0.491s] creating /home/upsurge/tt_package/install/yolo_ros/share/ament_index/resource_index/packages
+[0.491s] copying resource/yolo_ros -> /home/upsurge/tt_package/install/yolo_ros/share/ament_index/resource_index/packages
+[0.491s] copying package.xml -> /home/upsurge/tt_package/install/yolo_ros/share/yolo_ros
+[0.491s] running install_egg_info
+[0.499s] Copying ../../../build/yolo_ros/yolo_ros.egg-info to /home/upsurge/tt_package/install/yolo_ros/lib/python3.10/site-packages/yolo_ros-0.0.0-py3.10.egg-info
+[0.499s] running install_scripts
+[0.556s] Installing debug_node script to /home/upsurge/tt_package/install/yolo_ros/lib/yolo_ros
+[0.556s] Installing detect_3d_node script to /home/upsurge/tt_package/install/yolo_ros/lib/yolo_ros
+[0.556s] Installing tracking_node script to /home/upsurge/tt_package/install/yolo_ros/lib/yolo_ros
+[0.556s] Installing yolo_node script to /home/upsurge/tt_package/install/yolo_ros/lib/yolo_ros
+[0.556s] writing list of installed files to '/home/upsurge/tt_package/build/yolo_ros/install.log'
+[0.567s] Invoked command in '/home/upsurge/tt_package/src/yolo_ros/yolo_ros' returned '0': AMENT_PREFIX_PATH=/home/upsurge/tt_package/install/yolo_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/upsurge/tt_package/install/yolo_msgs LD_LIBRARY_PATH=/home/upsurge/tt_package/install/yolo_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/upsurge/tt_package/build/yolo_ros/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/upsurge/tt_package/install/yolo_ros/lib/python3.10/site-packages:/home/upsurge/tt_package/install/yolo_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../../build/yolo_ros build --build-base /home/upsurge/tt_package/build/yolo_ros/build install --record /home/upsurge/tt_package/build/yolo_ros/install.log --single-version-externally-managed install_data

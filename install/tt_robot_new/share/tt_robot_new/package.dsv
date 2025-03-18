@@ -1,0 +1,8 @@
+source;share/tt_robot_new/hook/cmake_prefix_path.ps1
+source;share/tt_robot_new/hook/cmake_prefix_path.dsv
+source;share/tt_robot_new/hook/cmake_prefix_path.sh
+source;share/tt_robot_new/local_setup.bash
+source;share/tt_robot_new/local_setup.dsv
+source;share/tt_robot_new/local_setup.ps1
+source;share/tt_robot_new/local_setup.sh
+source;share/tt_robot_new/local_setup.zsh

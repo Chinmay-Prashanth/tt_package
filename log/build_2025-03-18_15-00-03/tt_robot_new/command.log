@@ -1,0 +1,6 @@
+Invoking command in '/home/upsurge/tt_package/build/tt_robot_new': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake /home/upsurge/tt_package/src/tt_robot_new -DCMAKE_INSTALL_PREFIX=/home/upsurge/tt_package/install/tt_robot_new
+Invoked command in '/home/upsurge/tt_package/build/tt_robot_new' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake /home/upsurge/tt_package/src/tt_robot_new -DCMAKE_INSTALL_PREFIX=/home/upsurge/tt_package/install/tt_robot_new
+Invoking command in '/home/upsurge/tt_package/build/tt_robot_new': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/upsurge/tt_package/build/tt_robot_new -- -j32 -l32
+Invoked command in '/home/upsurge/tt_package/build/tt_robot_new' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/upsurge/tt_package/build/tt_robot_new -- -j32 -l32
+Invoking command in '/home/upsurge/tt_package/build/tt_robot_new': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/upsurge/tt_package/build/tt_robot_new
+Invoked command in '/home/upsurge/tt_package/build/tt_robot_new' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/upsurge/tt_package/build/tt_robot_new

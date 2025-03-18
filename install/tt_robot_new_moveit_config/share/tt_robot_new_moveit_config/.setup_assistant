@@ -1,0 +1,25 @@
+moveit_setup_assistant_config:
+  urdf:
+    package: tt_robot_new
+    relative_path: urdf/tt_robot_new.urdf
+  srdf:
+    relative_path: config/tt_robot_new.srdf
+  package_settings:
+    author_name: Chinmay
+    author_email: chinmay@upsurge.io
+    generated_timestamp: 1740579623
+  control_xacro:
+    command:
+      - position
+    state:
+      - position
+      - velocity
+  modified_urdf:
+    xacros:
+      - control_xacro
+  control_xacro:
+    command:
+      - position
+    state:
+      - position
+      - velocity

@@ -1,0 +1,6 @@
+Invoking command in '/home/upsurge/tt_package/build/realsense2_camera_msgs': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake /home/upsurge/tt_package/src/realsense-ros/realsense2_camera_msgs -DCMAKE_INSTALL_PREFIX=/home/upsurge/tt_package/install/realsense2_camera_msgs
+Invoked command in '/home/upsurge/tt_package/build/realsense2_camera_msgs' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake /home/upsurge/tt_package/src/realsense-ros/realsense2_camera_msgs -DCMAKE_INSTALL_PREFIX=/home/upsurge/tt_package/install/realsense2_camera_msgs
+Invoking command in '/home/upsurge/tt_package/build/realsense2_camera_msgs': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/upsurge/tt_package/build/realsense2_camera_msgs -- -j32 -l32
+Invoked command in '/home/upsurge/tt_package/build/realsense2_camera_msgs' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/upsurge/tt_package/build/realsense2_camera_msgs -- -j32 -l32
+Invoking command in '/home/upsurge/tt_package/build/realsense2_camera_msgs': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/upsurge/tt_package/build/realsense2_camera_msgs
+Invoked command in '/home/upsurge/tt_package/build/realsense2_camera_msgs' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/upsurge/tt_package/build/realsense2_camera_msgs

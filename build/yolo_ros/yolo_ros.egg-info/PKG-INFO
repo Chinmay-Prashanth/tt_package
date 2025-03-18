@@ -1,0 +1,13 @@
+Metadata-Version: 2.2
+Name: yolo_ros
+Version: 0.0.0
+Summary: YOLO for ROS 2
+Maintainer: Miguel Ángel González Santamarta
+Maintainer-email: mgons@unileon.es
+License: GPL-3
+Requires-Dist: setuptools
+Dynamic: license
+Dynamic: maintainer
+Dynamic: maintainer-email
+Dynamic: requires-dist
+Dynamic: summary

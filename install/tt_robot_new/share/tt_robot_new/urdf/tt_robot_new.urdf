@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.6.0-4-g7f85cfe  Build Version: 1.6.7995.38578
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+<robot
+  name="tt_robot_new">
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="-0.00068450739552306 -0.0177601382975201 -0.309617135038554"
+        rpy="0 0 0" />
+      <mass
+        value="9.7959481753208" />
+      <inertia
+        ixx="1.31043502484873"
+        ixy="9.20034806129902E-10"
+        ixz="5.13036286463764E-06"
+        iyy="0.117663335590758"
+        iyz="1.11756095773954E-08"
+        izz="1.19795759634263" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tt_robot_new/meshes/base_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tt_robot_new/meshes/base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="link1">
+    <inertial>
+      <origin
+        xyz="0.0515795102487956 0.0712796861517293 2.20004223339121E-05"
+        rpy="0 0 0" />
+      <mass
+        value="3.10157496535556" />
+      <inertia
+        ixx="0.00365213528794053"
+        ixy="0.000152045186326286"
+        ixz="5.06289312961614E-07"
+        iyy="0.00585553170474243"
+        iyz="-2.36168217005859E-06"
+        izz="0.00293625685237942" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tt_robot_new/meshes/link1.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tt_robot_new/meshes/link1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="jlink1"
+    type="prismatic">
+    <origin
+      xyz="-0.000210000000085087 0 0.0336899999999996"
+      rpy="1.5707963267949 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="link1" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-0.5"
+      upper="0.5"
+      effort="330"
+      velocity="37.68" />
+  </joint>
+  <link
+    name="link2">
+    <inertial>
+      <origin
+        xyz="-1.88368320941379E-10 1.74874559277782E-10 0.0467204521303066"
+        rpy="0 0 0" />
+      <mass
+        value="0.419386742315461" />
+      <inertia
+        ixx="0.000305156356931551"
+        ixy="7.55334082473175E-10"
+        ixz="-1.24629777794361E-12"
+        iyy="0.000287056887317105"
+        iyz="1.06009487919062E-12"
+        izz="0.000386600982434695" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tt_robot_new/meshes/link2.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tt_robot_new/meshes/link2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="jlink2"
+    type="revolute">
+    <origin
+      xyz="0.000307000000082103 0.126190262351384 6.26813771418266E-05"
+      rpy="-1.57079632679489 0 0" />
+    <parent
+      link="link1" />
+    <child
+      link="link2" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      lower="-3.14"
+      upper="3.14"
+      effort="1.32"
+      velocity="9420.0" />
+  </joint>
+  <link
+    name="link3">
+    <inertial>
+      <origin
+        xyz="3.25066640272098E-11 -0.123773974187578 0.0433249999999483"
+        rpy="0 0 0" />
+      <mass
+        value="0.2011194299253" />
+      <inertia
+        ixx="0.000440124087331883"
+        ixy="1.08178655134614E-13"
+        ixz="1.41113659459954E-20"
+        iyy="0.000143174669865854"
+        iyz="-9.03037125908013E-19"
+        izz="0.000324876527152772" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tt_robot_new/meshes/link3.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tt_robot_new/meshes/link3.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="jlink3"
+    type="revolute">
+    <origin
+      xyz="0 -0.0433249999999783 0.0934797376485841"
+      rpy="-1.5707963267949 0 0" />
+    <parent
+      link="link2" />
+    <child
+      link="link3" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="5.88399"
+      velocity="4.712388975" />
+  </joint>
+  <link
+    name="link4">
+    <inertial>
+      <origin
+        xyz="0.0930573226616448 0.000269897585655876 0.0462109403227624"
+        rpy="0 0 0" />
+      <mass
+        value="0.435806922427861" />
+      <inertia
+        ixx="0.000162284988620413"
+        ixy="-5.24307844513412E-07"
+        ixz="-1.17325972370809E-11"
+        iyy="0.00051189665256617"
+        iyz="1.50430408773966E-09"
+        izz="0.000405471720641148" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tt_robot_new/meshes/link4.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tt_robot_new/meshes/link4.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="jlink4"
+    type="revolute">
+    <origin
+      xyz="0 -0.280800000000015 -0.00288594165537415"
+      rpy="0 0 0" />
+    <parent
+      link="link3" />
+    <child
+      link="link4" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      lower="-0.698132"
+      upper="1.57"
+      effort="5.884"
+      velocity="4.7124" />
+  </joint>
+  <link
+    name="link5">
+    <inertial>
+      <origin
+        xyz="0.041894 -6.7695E-05 0.042274"
+        rpy="0 0 0" />
+      <mass
+        value="0.11814" />
+      <inertia
+        ixx="0.00014307"
+        ixy="4.2589E-08"
+        ixz="3.5041E-07"
+        iyy="0.00012979"
+        iyz="3.2235E-08"
+        izz="6.0556E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tt_robot_new/meshes/link5.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.75294 0.75294 0.75294 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tt_robot_new/meshes/link5.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="jlink5"
+    type="revolute">
+    <origin
+      xyz="0.215000000000021 0 -0.00248905834465663"
+      rpy="0 0 0" />
+    <parent
+      link="link4" />
+    <child
+      link="link5" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="3.92266"
+      velocity="11.10029403" />
+  </joint>
+  <link
+    name="link6">
+    <inertial>
+      <origin
+        xyz="8.58594260133572E-08 -9.09404329618724E-10 0.142670897995933"
+        rpy="0 0 0" />
+      <mass
+        value="0.259215495794655" />
+      <inertia
+        ixx="0.0012854171400005"
+        ixy="-7.86668490843991E-11"
+        ixz="7.11773078650646E-09"
+        iyy="0.0015317070253974"
+        iyz="-2.86634409453465E-12"
+        izz="0.000283938091295148" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tt_robot_new/meshes/link6.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tt_robot_new/meshes/link6.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="jlink6"
+    type="revolute">
+    <origin
+      xyz="0.0660978757954231 0 0.0487000000000821"
+      rpy="1.5707963267949 0 1.57079632679491" />
+    <parent
+      link="link5" />
+    <child
+      link="link6" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      lower="-3.14"
+      upper="3.14"
+      effort="1.96133"
+      velocity="11.10029403" />
+  </joint>
+</robot>

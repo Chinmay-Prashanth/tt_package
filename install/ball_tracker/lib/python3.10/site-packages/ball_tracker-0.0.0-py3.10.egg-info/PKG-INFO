@@ -1,0 +1,13 @@
+Metadata-Version: 2.2
+Name: ball_tracker
+Version: 0.0.0
+Summary: Ball Tracker Node using OpenCV, ROS2 and InferencePipeline for table tennis ball detection
+Maintainer: upsurge
+Maintainer-email: cp3873@nyu.edu
+License: TODO: License declaration
+Requires-Dist: setuptools
+Dynamic: license
+Dynamic: maintainer
+Dynamic: maintainer-email
+Dynamic: requires-dist
+Dynamic: summary

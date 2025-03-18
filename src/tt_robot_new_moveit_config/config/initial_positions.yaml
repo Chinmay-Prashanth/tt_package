@@ -1,0 +1,8 @@
+# Default initial positions for tt_robot_new's ros2_control fake system
+
+initial_positions:
+  jlink1: 0
+  jlink2: 0
+  jlink3: 0
+  jlink4: 0
+  jlink5: 0

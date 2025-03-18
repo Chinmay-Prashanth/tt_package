@@ -1,0 +1,4 @@
+source;share/tt_robot_new_moveit_config/local_setup.bash
+source;share/tt_robot_new_moveit_config/local_setup.dsv
+source;share/tt_robot_new_moveit_config/local_setup.sh
+source;share/tt_robot_new_moveit_config/local_setup.zsh

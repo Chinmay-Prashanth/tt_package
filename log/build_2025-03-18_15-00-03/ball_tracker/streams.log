@@ -1,0 +1,43 @@
+[0.407s] Invoking command in '/home/upsurge/tt_package/src/ball_tracker': PYTHONPATH=/home/upsurge/tt_package/build/ball_tracker/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/upsurge/tt_package/install/ball_tracker/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/ball_tracker build --build-base /home/upsurge/tt_package/build/ball_tracker/build install --record /home/upsurge/tt_package/build/ball_tracker/install.log --single-version-externally-managed install_data
+[0.474s] /home/upsurge/.local/lib/python3.10/site-packages/setuptools/_distutils/dist.py:270: UserWarning: Unknown distribution option: 'tests_require'
+[0.474s]   warnings.warn(msg)
+[0.519s] running egg_info
+[0.527s] creating ../../build/ball_tracker/ball_tracker.egg-info
+[0.527s] writing ../../build/ball_tracker/ball_tracker.egg-info/PKG-INFO
+[0.527s] writing dependency_links to ../../build/ball_tracker/ball_tracker.egg-info/dependency_links.txt
+[0.527s] writing entry points to ../../build/ball_tracker/ball_tracker.egg-info/entry_points.txt
+[0.527s] writing requirements to ../../build/ball_tracker/ball_tracker.egg-info/requires.txt
+[0.527s] writing top-level names to ../../build/ball_tracker/ball_tracker.egg-info/top_level.txt
+[0.527s] writing manifest file '../../build/ball_tracker/ball_tracker.egg-info/SOURCES.txt'
+[0.542s] reading manifest file '../../build/ball_tracker/ball_tracker.egg-info/SOURCES.txt'
+[0.543s] writing manifest file '../../build/ball_tracker/ball_tracker.egg-info/SOURCES.txt'
+[0.543s] running build
+[0.543s] running build_py
+[0.543s] creating /home/upsurge/tt_package/build/ball_tracker/build/lib/ball_tracker
+[0.543s] copying ball_tracker/ros_inference_tracker_node.py -> /home/upsurge/tt_package/build/ball_tracker/build/lib/ball_tracker
+[0.543s] copying ball_tracker/ball_tracker.py -> /home/upsurge/tt_package/build/ball_tracker/build/lib/ball_tracker
+[0.543s] copying ball_tracker/ping_pong_detector.py -> /home/upsurge/tt_package/build/ball_tracker/build/lib/ball_tracker
+[0.543s] copying ball_tracker/__init__.py -> /home/upsurge/tt_package/build/ball_tracker/build/lib/ball_tracker
+[0.543s] running install
+[0.545s] running install_lib
+[0.553s] creating /home/upsurge/tt_package/install/ball_tracker/lib/python3.10/site-packages/ball_tracker
+[0.553s] copying /home/upsurge/tt_package/build/ball_tracker/build/lib/ball_tracker/ros_inference_tracker_node.py -> /home/upsurge/tt_package/install/ball_tracker/lib/python3.10/site-packages/ball_tracker
+[0.553s] copying /home/upsurge/tt_package/build/ball_tracker/build/lib/ball_tracker/ball_tracker.py -> /home/upsurge/tt_package/install/ball_tracker/lib/python3.10/site-packages/ball_tracker
+[0.553s] copying /home/upsurge/tt_package/build/ball_tracker/build/lib/ball_tracker/ping_pong_detector.py -> /home/upsurge/tt_package/install/ball_tracker/lib/python3.10/site-packages/ball_tracker
+[0.553s] copying /home/upsurge/tt_package/build/ball_tracker/build/lib/ball_tracker/__init__.py -> /home/upsurge/tt_package/install/ball_tracker/lib/python3.10/site-packages/ball_tracker
+[0.553s] byte-compiling /home/upsurge/tt_package/install/ball_tracker/lib/python3.10/site-packages/ball_tracker/ros_inference_tracker_node.py to ros_inference_tracker_node.cpython-310.pyc
+[0.554s] byte-compiling /home/upsurge/tt_package/install/ball_tracker/lib/python3.10/site-packages/ball_tracker/ball_tracker.py to ball_tracker.cpython-310.pyc
+[0.555s] byte-compiling /home/upsurge/tt_package/install/ball_tracker/lib/python3.10/site-packages/ball_tracker/ping_pong_detector.py to ping_pong_detector.cpython-310.pyc
+[0.555s] byte-compiling /home/upsurge/tt_package/install/ball_tracker/lib/python3.10/site-packages/ball_tracker/__init__.py to __init__.cpython-310.pyc
+[0.555s] running install_data
+[0.556s] creating /home/upsurge/tt_package/install/ball_tracker/share/ament_index/resource_index/packages
+[0.556s] copying resource/ball_tracker -> /home/upsurge/tt_package/install/ball_tracker/share/ament_index/resource_index/packages
+[0.556s] copying package.xml -> /home/upsurge/tt_package/install/ball_tracker/share/ball_tracker
+[0.556s] running install_egg_info
+[0.564s] Copying ../../build/ball_tracker/ball_tracker.egg-info to /home/upsurge/tt_package/install/ball_tracker/lib/python3.10/site-packages/ball_tracker-0.0.0-py3.10.egg-info
+[0.564s] running install_scripts
+[0.622s] Installing ball_tracker script to /home/upsurge/tt_package/install/ball_tracker/lib/ball_tracker
+[0.622s] Installing ping_pong_detector script to /home/upsurge/tt_package/install/ball_tracker/lib/ball_tracker
+[0.622s] Installing ros_inference_tracker_node script to /home/upsurge/tt_package/install/ball_tracker/lib/ball_tracker
+[0.622s] writing list of installed files to '/home/upsurge/tt_package/build/ball_tracker/install.log'
+[0.633s] Invoked command in '/home/upsurge/tt_package/src/ball_tracker' returned '0': PYTHONPATH=/home/upsurge/tt_package/build/ball_tracker/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/upsurge/tt_package/install/ball_tracker/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/ball_tracker build --build-base /home/upsurge/tt_package/build/ball_tracker/build install --record /home/upsurge/tt_package/build/ball_tracker/install.log --single-version-externally-managed install_data

@@ -1,0 +1,13 @@
+train: ../train/images
+val: ../valid/images
+test: ../test/images
+
+nc: 1
+names: ['ping-pong-ball']
+
+roboflow:
+  workspace: pingpong-ojuhj
+  project: ping-pong-detection-0guzq
+  version: 3
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/pingpong-ojuhj/ping-pong-detection-0guzq/dataset/3

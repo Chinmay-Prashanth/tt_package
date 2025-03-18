@@ -18,6 +18,7 @@ The workspace contains the following packages:
 - `realsense-ros`: RealSense camera drivers and ROS2 integration
 - `tt_robot_new`: Main robot package
 - `tt_robot_new_moveit_config`: MoveIt configuration for the robot
+- `move_program`: Package containing robot movement programs
 
 ## Installation
 
@@ -52,30 +53,46 @@ source install/setup.bash
 
 ## Usage
 
-1. Connect the RealSense camera and ensure it's recognized by the system.
+For each terminal, first source the workspace:
+```bash
+source install/setup.bash
+```
 
-2. Launch the main system:
+Then follow these steps in order:
+
+1. Launch the MoveIt demo:
 ```bash
 ros2 launch tt_robot_new_moveit_config demo.launch.py
 ```
 
-3. In a new terminal, run the joint states converter node
-
-4. In a new terminal, launch the camera node:
+2. In a new terminal, run the random movement program:
 ```bash
-source install/setup.bash
+ros2 run move_program move_random
+```
+
+3. In a new terminal, run the joint states converter:
+```bash
+ros2 run move_program joint_state_converter
+```
+
+4. In a new terminal, launch the RealSense camera:
+```bash
 ros2 launch realsense2_camera rs_launch.py
 ```
 
-5. In a new terminal, launch the ball tracking node:
+5. In a new terminal, run the ball tracking node:
 ```bash
-source install/setup.bash
-ros2 run ball_tracker ball_tracking_node
+ros2 run ball_tracker ping_pong_detector
 ```
 
-6. For YOLO detection:
+6. In a new terminal, run the ball position prediction node (to be implemented):
 ```bash
-ros2 run yolo_ros yolo_node
+ros2 run move_program ball_predictor
+```
+
+7. Finally, run the hitting motion node (to be implemented):
+```bash
+ros2 run move_program hitting_motion
 ```
 
 ## Configuration
@@ -92,6 +109,7 @@ If you encounter any issues:
 3. Verify CUDA is properly set up for YOLO inference
 4. Make sure all ROS2 environment variables are properly set
 5. Verify that the YOLO weights file (`best.pt`) is properly downloaded and placed in the correct location
+6. Ensure you've sourced the workspace in each new terminal
 
 ## Contributing
 

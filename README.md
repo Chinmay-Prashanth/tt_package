@@ -31,9 +31,8 @@ The workspace contains the following packages:
 - **MoveIt Integration**: Path planning and execution using MoveIt
 
 ## Coming Soon
-
-- **Extended Kalman Filter (EKF)**: Advanced filtering for accurate ball trajectory prediction (in development)
-- **Predictive Robot Movement**: Robot movement to predicted ball positions (in development)
+- **Advanced Ball Prediction**: Implementation of Extended Kalman Filter (EKF) for accurate ball trajectory prediction
+- **Automatic Robot Movement**: Automated robot control to intercept predicted ball positions
 
 ## Installation
 
@@ -73,7 +72,7 @@ For each terminal, first source the workspace:
 source install/setup.bash
 ```
 
-### Running the Current System
+### Running the Real System
 
 1. Launch the MoveIt demo:
 ```bash
@@ -90,9 +89,16 @@ ros2 launch realsense2_camera rs_launch.py
 ros2 run ball_tracker ball_position_tracker
 ```
 
-4. In a new terminal, run the robot control program (basic movements):
+4. In a new terminal, run the ball position predictor (coming soon):
 ```bash
-ros2 run tt_robot_control move_random
+# This will be available in a future update
+# ros2 run ball_tracker ball_predictor
+```
+
+5. In a new terminal, run the robot control program (coming soon):
+```bash
+# This will be available in a future update
+# ros2 run tt_robot_control move_program
 ```
 
 ### Running the Rally Simulator
@@ -109,28 +115,13 @@ The rally simulator:
 - Performs realistic robot swing motions (forehand and backhand)
 - Uses optimized motor speeds for NEMA 23 and ST3215 actuators
 
-## Future Ball Prediction and Movement Features (Coming Soon)
+## Future Ball Prediction and Filtering
 
-The system will soon include an Extended Kalman Filter (EKF) for ball trajectory prediction with:
+The system will soon implement an Extended Kalman Filter (EKF) for ball trajectory prediction with:
 - Physics-based motion model accounting for gravity and bounces
 - Adaptive measurement update to handle noisy measurements
 - Future trajectory prediction to prepare the robot before the ball arrives
 - Visualization of the predicted trajectory for debugging
-
-Additionally, a specialized move_program will be implemented to:
-- Process predicted ball positions in real-time
-- Calculate optimal interception points
-- Plan and execute efficient robot movements to meet the ball
-- Adapt to changing predictions with path replanning
-
-## Development Roadmap
-
-1. ✅ Ball position tracking
-2. ✅ Basic robot movements
-3. ✅ Rally simulator
-4. 🔄 Ball trajectory prediction (in progress)
-5. 🔄 Predictive robot movement (in progress)
-6. ⬜ Full game capability
 
 ## Configuration
 

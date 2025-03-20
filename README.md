@@ -16,9 +16,20 @@ The workspace contains the following packages:
 - `ball_tracker`: Package for tracking table tennis balls
 - `yolo_ros`: ROS2 integration for YOLO object detection
 - `realsense-ros`: RealSense camera drivers and ROS2 integration
-- `tt_robot_new`: Main robot package
+- `tt_robot_new`: Main robot package with 5-DOF table tennis robot
 - `tt_robot_new_moveit_config`: MoveIt configuration for the robot
-- `move_program`: Package containing robot movement programs
+- `tt_robot_control`: Package containing robot movement and simulation programs
+
+## Key Features
+
+- **Ball Position Tracking**: Computer vision-based tracking of table tennis balls
+- **Extended Kalman Filter (EKF)**: Advanced filtering for accurate ball trajectory prediction
+- **Rally Simulator**: Simulation of table tennis rallies with randomized ball positions
+- **5-DOF Robot Control**: Control of a table tennis robot with 5 degrees of freedom:
+  - NEMA 23 powered prismatic joint for linear motion
+  - NEMA 23 powered rotational joint
+  - ST3215 servo-controlled main arm, sub arm, and wrist joints
+- **MoveIt Integration**: Path planning and execution using MoveIt
 
 ## Installation
 
@@ -58,48 +69,62 @@ For each terminal, first source the workspace:
 source install/setup.bash
 ```
 
-Then follow these steps in order:
+### Running the Real System
 
 1. Launch the MoveIt demo:
 ```bash
 ros2 launch tt_robot_new_moveit_config demo.launch.py
 ```
 
-2. In a new terminal, run the random movement program:
-```bash
-ros2 run move_program move_random
-```
-
-3. In a new terminal, run the joint states converter:
-```bash
-ros2 run move_program joint_state_converter
-```
-
-4. In a new terminal, launch the RealSense camera:
+2. In a new terminal, launch the RealSense camera:
 ```bash
 ros2 launch realsense2_camera rs_launch.py
 ```
 
-5. In a new terminal, run the ball tracking node:
+3. In a new terminal, run the ball tracking node:
 ```bash
-ros2 run ball_tracker ping_pong_detector
+ros2 run ball_tracker ball_position_tracker
 ```
 
-6. In a new terminal, run the ball position prediction node (to be implemented):
+4. In a new terminal, run the ball position predictor with EKF:
 ```bash
-ros2 run move_program ball_predictor
+ros2 run ball_tracker ball_predictor
 ```
 
-7. Finally, run the hitting motion node (to be implemented):
+5. In a new terminal, run the robot control program:
 ```bash
-ros2 run move_program hitting_motion
+ros2 run tt_robot_control move_program
 ```
+
+### Running the Rally Simulator
+
+To test the robot in simulation with randomized ball positions:
+
+```bash
+ros2 run tt_robot_control rally_simulator [number_of_serves]
+```
+
+The rally simulator:
+- Generates random ball positions on the robot's side (x: 0-0.2m, y: -0.8-0.8m, z: 0-0.5m)
+- Plans and executes robot movements to intercept the ball
+- Performs realistic robot swing motions (forehand and backhand)
+- Uses optimized motor speeds for NEMA 23 and ST3215 actuators
+
+## Ball Prediction and Filtering
+
+The system uses an Extended Kalman Filter (EKF) for ball trajectory prediction with:
+- Physics-based motion model accounting for gravity and bounces
+- Adaptive measurement update to handle noisy measurements
+- Future trajectory prediction to prepare the robot before the ball arrives
+- Visualization of the predicted trajectory for debugging
 
 ## Configuration
 
 - The YOLO model weights (`best.pt`) should be downloaded separately and placed in the workspace root
 - Camera configuration can be modified in the RealSense launch files
 - Robot configuration parameters are in the MoveIt config package
+- Ball tracking and prediction parameters can be adjusted in `ball_position_tracker.py` and `ball_predictor.py`
+- Rally simulator parameters can be modified in `rally_simulator.cpp`
 
 ## Troubleshooting
 
@@ -110,6 +135,12 @@ If you encounter any issues:
 4. Make sure all ROS2 environment variables are properly set
 5. Verify that the YOLO weights file (`best.pt`) is properly downloaded and placed in the correct location
 6. Ensure you've sourced the workspace in each new terminal
+7. Check the ROS2 topics to verify data is being published correctly:
+   ```bash
+   ros2 topic list
+   ros2 topic echo /ball_position
+   ros2 topic echo /predicted_ball_position
+   ```
 
 ## Contributing
 

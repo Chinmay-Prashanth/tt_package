@@ -11,13 +11,12 @@
 #include <geometry_msgs/msg/pose.hpp>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
 #include <sensor_msgs/msg/joint_state.hpp>
-#include <iomanip>
-#include <ctime>
 
 // Constants for ball movement and robot positioning
 const double ROBOT_X = 0.0;             // Robot origin X position (at origin)
 const double ROBOT_Y = 0.0;             // Robot origin Y position (at origin)
 const double ROBOT_Z = 0.0;             // Robot origin Z position (at origin)
+const double ROBOT_DISTANCE = 0.0;      // Distance of robot from the origin (meters)
 const double SERVER_DISTANCE = 2.74;    // Standard table tennis table length (meters)
 const double TABLE_WIDTH = 1.525;       // Standard table tennis table width (meters)
 const double TABLE_HEIGHT = 0.76;       // Standard table tennis table height (meters)
@@ -54,91 +53,91 @@ class RallySimulator : public rclcpp::Node
 {
 public:
     RallySimulator() : Node("rally_simulator"), 
+                      move_group_interface_(nullptr),
                       points_scored_(0),
                       shots_attempted_(0),
                       shots_on_target_(0),
                       successful_hits_(0),
-                      total_serves_(0)
+                      total_serves_(0),
+                      gen_(std::random_device{}())  // Properly initialize random generator
     {
-        // Initialize current joint values with defaults first
-        current_joint_values_ = DEFAULT_JOINT_VALUES;
+        RCLCPP_INFO(this->get_logger(), "Starting Rally Simulator Node");
         
-        // Create MoveGroupInterface for the arm with a longer timeout
-        RCLCPP_INFO(this->get_logger(), "Creating MoveGroupInterface for arm...");
-        
-        // Wait to ensure ROS is fully initialized
-        std::this_thread::sleep_for(std::chrono::seconds(2));
-        
-        try {
-            move_group_interface_ = std::make_shared<moveit::planning_interface::MoveGroupInterface>(
-                std::shared_ptr<rclcpp::Node>(this, [](auto*){/* null deleter */}), "arm");
+        RCLCPP_INFO(this->get_logger(), "Robot is positioned at distance %.2f from origin", ROBOT_DISTANCE);
+        RCLCPP_INFO(this->get_logger(), "Server is positioned at distance %.2f from origin", SERVER_DISTANCE);
+        RCLCPP_INFO(this->get_logger(), "Table dimensions: %.2f x %.2f meters, height: %.2f meters",
+            SERVER_DISTANCE, TABLE_WIDTH, TABLE_HEIGHT);
             
-            // Set planning time and other parameters
-            move_group_interface_->setPlanningTime(5.0);
-            move_group_interface_->setMaxVelocityScalingFactor(0.5);
-            move_group_interface_->setMaxAccelerationScalingFactor(0.5);
-            
-            RCLCPP_INFO(this->get_logger(), "MoveGroupInterface created successfully");
-        } catch (const std::exception& e) {
-            RCLCPP_ERROR(this->get_logger(), "Failed to create MoveGroupInterface: %s", e.what());
-            rclcpp::shutdown();
-            throw;
-        }
-        
-        // Try to get current joint values, but don't crash if we can't
-        try {
-            auto joint_values = move_group_interface_->getCurrentJointValues();
-            if (joint_values.size() == 5) {  // Ensure we got the correct number of joints
-                current_joint_values_ = joint_values;
-                RCLCPP_INFO(this->get_logger(), "Successfully retrieved current joint values");
-            } else {
-                RCLCPP_WARN(this->get_logger(), "Retrieved joint values have incorrect size: %zu (expected 5)", 
-                    joint_values.size());
-                RCLCPP_INFO(this->get_logger(), "Using default joint values instead");
-            }
-        } catch (const std::exception& e) {
-            RCLCPP_WARN(this->get_logger(), "Failed to get current joint values: %s", e.what());
-            RCLCPP_INFO(this->get_logger(), "Using default joint values instead");
-        }
-        
-        // Initialize random number generator
-        std::random_device rd;
-        gen_ = std::mt19937(rd());
-
-        RCLCPP_INFO(this->get_logger(), "Rally simulator initialized");
-        RCLCPP_INFO(this->get_logger(), "Robot position: x=%.2f, y=%.2f, z=%.2f", ROBOT_X, ROBOT_Y, ROBOT_Z);
-        RCLCPP_INFO(this->get_logger(), "Server distance from robot: %.2f meters", SERVER_DISTANCE);
-        RCLCPP_INFO(this->get_logger(), "Target zone: x=%.2f±%.2f, y=0.0±%.2f", 
-                    TARGET_X, TARGET_ZONE_LENGTH/2, TARGET_ZONE_WIDTH/2);
-        
-        // Give ROS time to establish connections
-        RCLCPP_INFO(this->get_logger(), "Waiting for 2 seconds to establish connections...");
-        std::this_thread::sleep_for(std::chrono::seconds(2));
-
         // Create log file with timestamp
         std::time_t now = std::time(nullptr);
+        std::tm* now_tm = std::localtime(&now);
         char timestamp[20];
-        std::strftime(timestamp, sizeof(timestamp), "%Y%m%d_%H%M%S", std::localtime(&now));
-        std::string log_filename = "rally_simulation_" + std::string(timestamp) + ".csv";
-        log_file_.open(log_filename);
+        std::strftime(timestamp, sizeof(timestamp), "%Y%m%d_%H%M%S", now_tm);
         
-        // Write CSV header
-        log_file_ << "serve_num,ball_x,ball_y,ball_z,joint1,joint2,joint3,joint4,joint5,predicted_landing_x,predicted_landing_y,predicted_landing_z,hit_success\n";
+        std::string filename = "rally_simulation_" + std::string(timestamp) + ".csv";
+        log_file_.open(filename);
         
-        RCLCPP_INFO(this->get_logger(), "Created log file: %s", log_filename.c_str());
+        if (log_file_.is_open()) {
+            // Write CSV header
+            log_file_ << "serve_num,ball_x,ball_y,ball_z,joint1,joint2,joint3,joint4,joint5,"
+                    << "predicted_landing_x,predicted_landing_y,predicted_landing_z,hit_success" << std::endl;
+            RCLCPP_INFO(this->get_logger(), "Log file created: %s", filename.c_str());
+        } else {
+            RCLCPP_ERROR(this->get_logger(), "Failed to create log file");
+        }
+        
+        // Create publisher for visualization markers
+        vis_marker_pub_ = this->create_publisher<visualization_msgs::msg::MarkerArray>(
+            "rally_visualization", 10);
     }
-
+    
+    void initializeMoveGroup()
+    {
+        // Initialize MoveIt interface for the robot arm
+        RCLCPP_INFO(this->get_logger(), "Initializing MoveGroupInterface...");
+        
+        // Wait for a while to make sure ROS environment is fully up
+        RCLCPP_INFO(this->get_logger(), "Waiting for 2 seconds to establish connections...");
+        std::this_thread::sleep_for(std::chrono::seconds(2));
+        
+        try {
+            // Use the correct way to pass shared_from_this() to avoid the bad_weak_ptr error
+            move_group_interface_ = std::make_shared<moveit::planning_interface::MoveGroupInterface>(
+                this->shared_from_this(), "arm");
+            
+            RCLCPP_INFO(this->get_logger(), "MoveGroupInterface created for planning group: %s", 
+                move_group_interface_->getName().c_str());
+            RCLCPP_INFO(this->get_logger(), "Available planning groups: %s", 
+                move_group_interface_->getJointModelGroupNames().size() > 0 ? 
+                move_group_interface_->getJointModelGroupNames()[0].c_str() : "None");
+            
+            // Get the robot model and reference frame information
+            RCLCPP_INFO(this->get_logger(), "Reference frame: %s", move_group_interface_->getPlanningFrame().c_str());
+            RCLCPP_INFO(this->get_logger(), "End effector link: %s", move_group_interface_->getEndEffectorLink().c_str());
+            
+            // Set parameters for planning and execution
+            move_group_interface_->setPlanningTime(5.0);  // Set max planning time
+            move_group_interface_->setNumPlanningAttempts(3);  // Set number of attempts
+            move_group_interface_->setGoalTolerance(0.01);  // 1cm tolerance for reaching goals
+            
+        } catch (const std::exception& e) {
+            RCLCPP_ERROR(this->get_logger(), "Error initializing MoveGroupInterface: %s", e.what());
+        }
+    }
+    
     ~RallySimulator()
     {
-        // Write final stats before closing
-        log_file_ << "\nFinal Statistics\n";
-        log_file_ << "Total serves: " << total_serves_ << "\n";
-        log_file_ << "Successful hits: " << successful_hits_ << "\n";
-        log_file_ << "Success rate: " << (total_serves_ > 0 ? (100.0 * successful_hits_ / total_serves_) : 0.0) << "%\n";
-        
-        // Close log file
-        log_file_.close();
-        RCLCPP_INFO(this->get_logger(), "Log file closed with final statistics");
+        if (log_file_.is_open()) {
+            // Write final statistics
+            log_file_ << "\nFinal Statistics\n";
+            log_file_ << "Total serves," << total_serves_ << std::endl;
+            log_file_ << "Successful hits," << successful_hits_ << std::endl;
+            double success_rate = (total_serves_ > 0) ? (100.0 * successful_hits_ / total_serves_) : 0.0;
+            log_file_ << "Success rate," << std::fixed << std::setprecision(1) << success_rate << "%" << std::endl;
+            
+            log_file_.close();
+            RCLCPP_INFO(this->get_logger(), "Log file closed with final statistics");
+        }
     }
 
     // Generate a random serve position from the server side
@@ -262,13 +261,14 @@ public:
         
         // Set overall velocity scaling - using the NEMA 23 motors as reference
         // Using 80% of max capability for safety
-        move_group_interface_->setMaxVelocityScalingFactor(0.8);
+        double velocity_scaling = 0.8;
+        move_group_interface_->setMaxVelocityScalingFactor(velocity_scaling);
         
         // Set overall acceleration scaling
         move_group_interface_->setMaxAccelerationScalingFactor(0.7);
         
         RCLCPP_INFO(this->get_logger(), 
-            "Set velocity scaling to 80% for NEMA 23 motors and ST3215 servos");
+            "Set velocity scaling to %.1f%% for NEMA 23 motors and ST3215 servos", velocity_scaling * 100.0);
     }
     
     // Calculate where the ball would land based on the swing execution
@@ -502,121 +502,73 @@ public:
     // Simulate a rally
     void simulateRally(int num_serves)
     {
-        RCLCPP_INFO(this->get_logger(), "Starting rally simulation with %d serves...", num_serves);
+        RCLCPP_INFO(this->get_logger(), "Starting rally simulation with %d serves", num_serves);
         
-        // Simple simulation mode without actual robot movement (to prevent segfaults)
-        // Just generate ball positions and log them
-        for (int i = 0; i < num_serves; ++i) {
-            total_serves_++;
-            RCLCPP_INFO(this->get_logger(), "Serve %d of %d", i + 1, num_serves);
+        // Reset scoring counters
+        points_scored_ = 0;
+        shots_attempted_ = 0;
+        shots_on_target_ = 0;
+        
+        for (int i = 0; i < num_serves; i++)
+        {
+            RCLCPP_INFO(this->get_logger(), "Serve %d/%d", i+1, num_serves);
             
-            // Generate a random ball position
-            geometry_msgs::msg::Pose ball_pose = generateServePosition();
-            
-            // Create random joint positions (simulated, not actual robot movement)
-            std::vector<double> joint_positions(5);
-            std::uniform_real_distribution<double> joint_dist(-0.5, 0.5);
-            for (int j = 0; j < 5; j++) {
-                joint_positions[j] = joint_dist(gen_);
-            }
-            
-            // Decide hit success randomly but with 80% success rate
-            std::uniform_real_distribution<double> success_dist(0.0, 1.0);
-            bool hit_success = (success_dist(gen_) < 0.8);
-            
-            if (hit_success) {
-                successful_hits_++;
-                RCLCPP_INFO(this->get_logger(), "Successfully hit the ball on serve %d!", i + 1);
-            } else {
-                RCLCPP_INFO(this->get_logger(), "Failed to hit the ball on serve %d", i + 1);
-            }
-            
-            // Generate random landing position
-            geometry_msgs::msg::Pose predicted_landing;
-            std::uniform_real_distribution<double> landing_x_dist(2.0, 2.74);
-            std::uniform_real_distribution<double> landing_y_dist(-0.8, 0.8);
-            predicted_landing.position.x = landing_x_dist(gen_);
-            predicted_landing.position.y = landing_y_dist(gen_);
-            predicted_landing.position.z = TABLE_HEIGHT + BALL_RADIUS;
-            
-            // Set orientation
-            tf2::Quaternion q;
-            q.setRPY(0, 0, 0);
-            predicted_landing.orientation = tf2::toMsg(q);
-            
+            // Generate serve position from server
+            auto serve_pose = generateServePosition();
             RCLCPP_INFO(this->get_logger(), 
-                "Predicted ball landing at: x=%.3f, y=%.3f, z=%.3f",
-                predicted_landing.position.x, predicted_landing.position.y, predicted_landing.position.z);
+                "Serve from server: x=%.3f, y=%.3f, z=%.3f (server is sending ball toward robot)",
+                serve_pose.position.x, serve_pose.position.y, serve_pose.position.z);
             
-            // Log the data for this serve
-            log_file_ << (i + 1) << ",";
-            log_file_ << ball_pose.position.x << "," << ball_pose.position.y << "," << ball_pose.position.z << ",";
+            // Calculate where the ball will arrive at our side
+            auto ball_arrival_pose = calculateBallArrival(serve_pose);
             
-            for (size_t j = 0; j < joint_positions.size(); ++j) {
-                log_file_ << joint_positions[j];
-                if (j < joint_positions.size() - 1) {
-                    log_file_ << ",";
-                }
+            // Move to ready position to receive the serve
+            if (!moveToReadyPosition(ball_arrival_pose))
+            {
+                RCLCPP_ERROR(this->get_logger(), "Failed to move to ready position for serve %d", i+1);
+                continue;
             }
             
-            log_file_ << "," << predicted_landing.position.x << "," << predicted_landing.position.y;
-            log_file_ << "," << predicted_landing.position.z << "," << (hit_success ? "1" : "0") << "\n";
+            // Wait for the ball to "arrive" (simulated)
+            RCLCPP_INFO(this->get_logger(), "Waiting for ball to arrive...");
+            std::this_thread::sleep_for(std::chrono::milliseconds(1000));
             
-            // Pause briefly between serves
-            rclcpp::sleep_for(std::chrono::milliseconds(100));
+            // Execute swing motion to hit the ball back toward the server
+            if (!executeSwing(ball_arrival_pose))
+            {
+                RCLCPP_ERROR(this->get_logger(), "Failed to execute swing for serve %d", i+1);
+                continue;
+            }
+            
+            // Log the result
+            RCLCPP_INFO(this->get_logger(), "Successfully returned serve %d/%d", i+1, num_serves);
+            
+            // Wait before next serve
+            std::this_thread::sleep_for(std::chrono::seconds(3));
+            
+            // Show interim stats every 10 serves
+            if (i > 0 && (i+1) % 10 == 0) {
+                printStats();
+            }
         }
         
-        // Log final statistics
-        double success_rate = (total_serves_ > 0) ? (100.0 * successful_hits_ / total_serves_) : 0.0;
-        RCLCPP_INFO(this->get_logger(), 
-            "Rally complete! Results: %d/%d successful hits (%.1f%%)",
-            successful_hits_, total_serves_, success_rate);
+        // Print final stats
+        RCLCPP_INFO(this->get_logger(), "Rally simulation completed");
+        printStats();
     }
     
-    // Calculate where the ball would land based on the swing execution
-    geometry_msgs::msg::Pose calculateLanding(const geometry_msgs::msg::Pose& ball_arrival_pose, bool hit_success)
+    // Print statistics about the simulation
+    void printStats()
     {
-        geometry_msgs::msg::Pose landing_pose;
-        
-        if (!hit_success) {
-            // If the hit failed, ball would just land where it was
-            landing_pose = ball_arrival_pose;
-            return landing_pose;
-        }
-        
-        // For a successful hit, estimate where it would land on the server's side
-        // This is a simple model - in a real system we'd use physics
-        
-        // Get current joint values to determine the type of swing
-        std::vector<double> current_joints = move_group_interface_->getCurrentJointValues();
-        double swing_angle = current_joints[1];  // The rotation joint determines direction
-        
-        // Calculate a landing position based on the swing
-        double distance_to_server = SERVER_DISTANCE - ball_arrival_pose.position.x;
-        double server_x = SERVER_DISTANCE - 0.5;  // Aim 0.5m from server edge of table
-        double server_y = ball_arrival_pose.position.y;
-        
-        // Adjust based on swing angle - this simulates the paddle angle effect
-        server_y += swing_angle * 0.2;  // Offset based on rotation
-        
-        // Add some randomness to simulate variations in the hit
-        std::normal_distribution<double> x_variation(0.0, 0.3);
-        std::normal_distribution<double> y_variation(0.0, 0.2);
-        
-        landing_pose.position.x = server_x + x_variation(gen_);
-        landing_pose.position.y = server_y + y_variation(gen_);
-        landing_pose.position.z = TABLE_HEIGHT + BALL_RADIUS;
-        
-        // Set orientation
-        tf2::Quaternion q;
-        q.setRPY(0, 0, 0);
-        landing_pose.orientation = tf2::toMsg(q);
-        
-        RCLCPP_INFO(this->get_logger(), 
-            "Predicted ball landing at: x=%.3f, y=%.3f, z=%.3f",
-            landing_pose.position.x, landing_pose.position.y, landing_pose.position.z);
-            
-        return landing_pose;
+        RCLCPP_INFO(this->get_logger(), "==== RALLY STATS ====");
+        RCLCPP_INFO(this->get_logger(), "Shots attempted: %d", shots_attempted_);
+        RCLCPP_INFO(this->get_logger(), "Shots on target: %d (%.1f%%)", 
+            shots_on_target_, shots_attempted_ > 0 ? 
+            (100.0 * shots_on_target_ / shots_attempted_) : 0.0);
+        RCLCPP_INFO(this->get_logger(), "Total points scored: %d", points_scored_);
+        RCLCPP_INFO(this->get_logger(), "Average points per shot: %.2f", 
+            shots_attempted_ > 0 ? (double)points_scored_ / shots_attempted_ : 0.0);
+        RCLCPP_INFO(this->get_logger(), "====================");
     }
 
 private:
@@ -628,13 +580,10 @@ private:
     int points_scored_;
     int shots_attempted_;
     int shots_on_target_;
-    
-    // Statistics
     int successful_hits_;
     int total_serves_;
-    
-    // Log file
     std::ofstream log_file_;
+    rclcpp::Publisher<visualization_msgs::msg::MarkerArray>::SharedPtr vis_marker_pub_;
 };
 
 int main(int argc, char** argv)

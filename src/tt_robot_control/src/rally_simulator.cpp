@@ -16,7 +16,6 @@
 const double ROBOT_X = 0.0;             // Robot origin X position (at origin)
 const double ROBOT_Y = 0.0;             // Robot origin Y position (at origin)
 const double ROBOT_Z = 0.0;             // Robot origin Z position (at origin)
-const double ROBOT_DISTANCE = 0.0;      // Distance of robot from the origin (meters)
 const double SERVER_DISTANCE = 2.74;    // Standard table tennis table length (meters)
 const double TABLE_WIDTH = 1.525;       // Standard table tennis table width (meters)
 const double TABLE_HEIGHT = 0.76;       // Standard table tennis table height (meters)
@@ -53,91 +52,64 @@ class RallySimulator : public rclcpp::Node
 {
 public:
     RallySimulator() : Node("rally_simulator"), 
-                      move_group_interface_(nullptr),
                       points_scored_(0),
                       shots_attempted_(0),
-                      shots_on_target_(0),
-                      successful_hits_(0),
-                      total_serves_(0),
-                      gen_(std::random_device{}())  // Properly initialize random generator
+                      shots_on_target_(0)
     {
-        RCLCPP_INFO(this->get_logger(), "Starting Rally Simulator Node");
+        // Initialize current joint values with defaults first
+        current_joint_values_ = DEFAULT_JOINT_VALUES;
         
-        RCLCPP_INFO(this->get_logger(), "Robot is positioned at distance %.2f from origin", ROBOT_DISTANCE);
-        RCLCPP_INFO(this->get_logger(), "Server is positioned at distance %.2f from origin", SERVER_DISTANCE);
-        RCLCPP_INFO(this->get_logger(), "Table dimensions: %.2f x %.2f meters, height: %.2f meters",
-            SERVER_DISTANCE, TABLE_WIDTH, TABLE_HEIGHT);
-            
-        // Create log file with timestamp
-        std::time_t now = std::time(nullptr);
-        std::tm* now_tm = std::localtime(&now);
-        char timestamp[20];
-        std::strftime(timestamp, sizeof(timestamp), "%Y%m%d_%H%M%S", now_tm);
+        // Create MoveGroupInterface for the arm with a longer timeout
+        RCLCPP_INFO(this->get_logger(), "Creating MoveGroupInterface for arm...");
         
-        std::string filename = "rally_simulation_" + std::string(timestamp) + ".csv";
-        log_file_.open(filename);
-        
-        if (log_file_.is_open()) {
-            // Write CSV header
-            log_file_ << "serve_num,ball_x,ball_y,ball_z,joint1,joint2,joint3,joint4,joint5,"
-                    << "predicted_landing_x,predicted_landing_y,predicted_landing_z,hit_success" << std::endl;
-            RCLCPP_INFO(this->get_logger(), "Log file created: %s", filename.c_str());
-        } else {
-            RCLCPP_ERROR(this->get_logger(), "Failed to create log file");
-        }
-        
-        // Create publisher for visualization markers
-        vis_marker_pub_ = this->create_publisher<visualization_msgs::msg::MarkerArray>(
-            "rally_visualization", 10);
-    }
-    
-    void initializeMoveGroup()
-    {
-        // Initialize MoveIt interface for the robot arm
-        RCLCPP_INFO(this->get_logger(), "Initializing MoveGroupInterface...");
-        
-        // Wait for a while to make sure ROS environment is fully up
-        RCLCPP_INFO(this->get_logger(), "Waiting for 2 seconds to establish connections...");
+        // Wait to ensure ROS is fully initialized
         std::this_thread::sleep_for(std::chrono::seconds(2));
         
         try {
-            // Use the correct way to pass shared_from_this() to avoid the bad_weak_ptr error
             move_group_interface_ = std::make_shared<moveit::planning_interface::MoveGroupInterface>(
-                this->shared_from_this(), "arm");
+                std::shared_ptr<rclcpp::Node>(this, [](auto*){/* null deleter */}), "arm");
             
-            RCLCPP_INFO(this->get_logger(), "MoveGroupInterface created for planning group: %s", 
-                move_group_interface_->getName().c_str());
-            RCLCPP_INFO(this->get_logger(), "Available planning groups: %s", 
-                move_group_interface_->getJointModelGroupNames().size() > 0 ? 
-                move_group_interface_->getJointModelGroupNames()[0].c_str() : "None");
+            // Set planning time and other parameters
+            move_group_interface_->setPlanningTime(5.0);
+            move_group_interface_->setMaxVelocityScalingFactor(0.5);
+            move_group_interface_->setMaxAccelerationScalingFactor(0.5);
             
-            // Get the robot model and reference frame information
-            RCLCPP_INFO(this->get_logger(), "Reference frame: %s", move_group_interface_->getPlanningFrame().c_str());
-            RCLCPP_INFO(this->get_logger(), "End effector link: %s", move_group_interface_->getEndEffectorLink().c_str());
-            
-            // Set parameters for planning and execution
-            move_group_interface_->setPlanningTime(5.0);  // Set max planning time
-            move_group_interface_->setNumPlanningAttempts(3);  // Set number of attempts
-            move_group_interface_->setGoalTolerance(0.01);  // 1cm tolerance for reaching goals
-            
+            RCLCPP_INFO(this->get_logger(), "MoveGroupInterface created successfully");
         } catch (const std::exception& e) {
-            RCLCPP_ERROR(this->get_logger(), "Error initializing MoveGroupInterface: %s", e.what());
+            RCLCPP_ERROR(this->get_logger(), "Failed to create MoveGroupInterface: %s", e.what());
+            rclcpp::shutdown();
+            throw;
         }
-    }
-    
-    ~RallySimulator()
-    {
-        if (log_file_.is_open()) {
-            // Write final statistics
-            log_file_ << "\nFinal Statistics\n";
-            log_file_ << "Total serves," << total_serves_ << std::endl;
-            log_file_ << "Successful hits," << successful_hits_ << std::endl;
-            double success_rate = (total_serves_ > 0) ? (100.0 * successful_hits_ / total_serves_) : 0.0;
-            log_file_ << "Success rate," << std::fixed << std::setprecision(1) << success_rate << "%" << std::endl;
-            
-            log_file_.close();
-            RCLCPP_INFO(this->get_logger(), "Log file closed with final statistics");
+        
+        // Try to get current joint values, but don't crash if we can't
+        try {
+            auto joint_values = move_group_interface_->getCurrentJointValues();
+            if (joint_values.size() == 5) {  // Ensure we got the correct number of joints
+                current_joint_values_ = joint_values;
+                RCLCPP_INFO(this->get_logger(), "Successfully retrieved current joint values");
+            } else {
+                RCLCPP_WARN(this->get_logger(), "Retrieved joint values have incorrect size: %zu (expected 5)", 
+                    joint_values.size());
+                RCLCPP_INFO(this->get_logger(), "Using default joint values instead");
+            }
+        } catch (const std::exception& e) {
+            RCLCPP_WARN(this->get_logger(), "Failed to get current joint values: %s", e.what());
+            RCLCPP_INFO(this->get_logger(), "Using default joint values instead");
         }
+        
+        // Initialize random number generator
+        std::random_device rd;
+        gen_ = std::mt19937(rd());
+
+        RCLCPP_INFO(this->get_logger(), "Rally simulator initialized");
+        RCLCPP_INFO(this->get_logger(), "Robot position: x=%.2f, y=%.2f, z=%.2f", ROBOT_X, ROBOT_Y, ROBOT_Z);
+        RCLCPP_INFO(this->get_logger(), "Server distance from robot: %.2f meters", SERVER_DISTANCE);
+        RCLCPP_INFO(this->get_logger(), "Target zone: x=%.2f±%.2f, y=0.0±%.2f", 
+                    TARGET_X, TARGET_ZONE_LENGTH/2, TARGET_ZONE_WIDTH/2);
+        
+        // Give ROS time to establish connections
+        RCLCPP_INFO(this->get_logger(), "Waiting for 2 seconds to establish connections...");
+        std::this_thread::sleep_for(std::chrono::seconds(2));
     }
 
     // Generate a random serve position from the server side
@@ -261,14 +233,13 @@ public:
         
         // Set overall velocity scaling - using the NEMA 23 motors as reference
         // Using 80% of max capability for safety
-        double velocity_scaling = 0.8;
-        move_group_interface_->setMaxVelocityScalingFactor(velocity_scaling);
+        move_group_interface_->setMaxVelocityScalingFactor(0.8);
         
         // Set overall acceleration scaling
         move_group_interface_->setMaxAccelerationScalingFactor(0.7);
         
         RCLCPP_INFO(this->get_logger(), 
-            "Set velocity scaling to %.1f%% for NEMA 23 motors and ST3215 servos", velocity_scaling * 100.0);
+            "Set velocity scaling to 80%% for NEMA 23 motors and ST3215 servos");
     }
     
     // Calculate where the ball would land based on the swing execution
@@ -580,10 +551,6 @@ private:
     int points_scored_;
     int shots_attempted_;
     int shots_on_target_;
-    int successful_hits_;
-    int total_serves_;
-    std::ofstream log_file_;
-    rclcpp::Publisher<visualization_msgs::msg::MarkerArray>::SharedPtr vis_marker_pub_;
 };
 
 int main(int argc, char** argv)

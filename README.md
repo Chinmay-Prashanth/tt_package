@@ -23,14 +23,17 @@ The workspace contains the following packages:
 ## Key Features
 
 - **Ball Position Tracking**: Computer vision-based tracking of table tennis balls
-- **Extended Kalman Filter (EKF)**: Advanced filtering for accurate ball trajectory prediction
 - **Rally Simulator**: Simulation of table tennis rallies with randomized ball positions
 - **5-DOF Robot Control**: Control of a table tennis robot with 5 degrees of freedom:
   - NEMA 23 powered prismatic joint for linear motion
   - NEMA 23 powered rotational joint
   - ST3215 servo-controlled main arm, sub arm, and wrist joints
 - **MoveIt Integration**: Path planning and execution using MoveIt
-- **Complete Implementation**: All components fully implemented including ball prediction and robot control
+
+## Coming Soon
+
+- **Extended Kalman Filter (EKF)**: Advanced filtering for accurate ball trajectory prediction (in development)
+- **Predictive Robot Movement**: Robot movement to predicted ball positions (in development)
 
 ## Installation
 
@@ -70,7 +73,7 @@ For each terminal, first source the workspace:
 source install/setup.bash
 ```
 
-### Running the Real System
+### Running the Current System
 
 1. Launch the MoveIt demo:
 ```bash
@@ -87,14 +90,9 @@ ros2 launch realsense2_camera rs_launch.py
 ros2 run ball_tracker ball_position_tracker
 ```
 
-4. In a new terminal, run the ball position predictor with EKF:
+4. In a new terminal, run the robot control program (basic movements):
 ```bash
-ros2 run ball_tracker ball_predictor
-```
-
-5. In a new terminal, run the robot control program:
-```bash
-ros2 run tt_robot_control move_program
+ros2 run tt_robot_control move_random
 ```
 
 ### Running the Rally Simulator
@@ -111,20 +109,34 @@ The rally simulator:
 - Performs realistic robot swing motions (forehand and backhand)
 - Uses optimized motor speeds for NEMA 23 and ST3215 actuators
 
-## Ball Prediction and Filtering
+## Future Ball Prediction and Movement Features (Coming Soon)
 
-The system uses an Extended Kalman Filter (EKF) for ball trajectory prediction with:
+The system will soon include an Extended Kalman Filter (EKF) for ball trajectory prediction with:
 - Physics-based motion model accounting for gravity and bounces
 - Adaptive measurement update to handle noisy measurements
 - Future trajectory prediction to prepare the robot before the ball arrives
 - Visualization of the predicted trajectory for debugging
+
+Additionally, a specialized move_program will be implemented to:
+- Process predicted ball positions in real-time
+- Calculate optimal interception points
+- Plan and execute efficient robot movements to meet the ball
+- Adapt to changing predictions with path replanning
+
+## Development Roadmap
+
+1. ✅ Ball position tracking
+2. ✅ Basic robot movements
+3. ✅ Rally simulator
+4. 🔄 Ball trajectory prediction (in progress)
+5. 🔄 Predictive robot movement (in progress)
+6. ⬜ Full game capability
 
 ## Configuration
 
 - The YOLO model weights (`best.pt`) should be downloaded separately and placed in the workspace root
 - Camera configuration can be modified in the RealSense launch files
 - Robot configuration parameters are in the MoveIt config package
-- Ball tracking and prediction parameters can be adjusted in `ball_position_tracker.py` and `ball_predictor.py`
 - Rally simulator parameters can be modified in `rally_simulator.cpp`
 
 ## Troubleshooting
@@ -140,7 +152,6 @@ If you encounter any issues:
    ```bash
    ros2 topic list
    ros2 topic echo /ball_position
-   ros2 topic echo /predicted_ball_position
    ```
 
 ## Contributing

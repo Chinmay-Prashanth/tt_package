@@ -9,7 +9,11 @@ setup.py
 ../../build/ball_tracker/ball_tracker.egg-info/top_level.txt
 ../../build/ball_tracker/ball_tracker.egg-info/zip-safe
 ball_tracker/__init__.py
+ball_tracker/aruco_detector.py
+ball_tracker/ball_position_tracker.py
+ball_tracker/ball_predictor.py
 ball_tracker/ball_tracker.py
+ball_tracker/integrated_detector.py
 ball_tracker/ping_pong_detector.py
 ball_tracker/ros_inference_tracker_node.py
 resource/ball_tracker

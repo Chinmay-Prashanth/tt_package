@@ -1,0 +1,23 @@
+[submodule "src/tt_robot_control/src/TTROBOT_SERVO"]
+    path = src/tt_robot_control/src/TTROBOT_SERVO
+    url = git@github.com:Armesh26/TTROBOT_SERVO.git
+
+[submodule "src/tt_robot_control/src/servost"]
+    path = src/tt_robot_control/src/servost
+    url = git@github.com:circuitseeker/servost.git
+
+[submodule "src/realsense-ros"]
+    path = src/realsense-ros
+    url = https://github.com/IntelRealSense/realsense-ros.git
+
+[submodule "src/ball_tracker"]
+    path = src/ball_tracker
+    url = git@github.com:Chinmay-Prashanth/ball_tracker.git
+
+[submodule "src/tt_robot_new"]
+    path = src/tt_robot_new
+    url = git@github.com:Chinmay-Prashanth/tt_robot_new.git
+
+[submodule "src/tt_robot_new_moveit_config"]
+    path = src/tt_robot_new_moveit_config
+    url = git@github.com:Chinmay-Prashanth/tt_robot_new_moveit_config.git 

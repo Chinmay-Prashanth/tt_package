@@ -5,11 +5,37 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
+# Find Python
+find_package(Python3 COMPONENTS Development REQUIRED)
+
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(moveit_ros_planning_interface REQUIRED)
 find_package(rclcpp REQUIRED)
+find_package(sensor_msgs REQUIRED)
 find_package(tf2_geometry_msgs REQUIRED)
+
+# Include directories
+include_directories(
+  include
+  ${Python3_INCLUDE_DIRS}
+)
+
+# Create the tt_robot_controller executable
+add_executable(tt_robot_controller src/tt_robot_controller.cpp)
+target_include_directories(tt_robot_controller PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>)
+target_compile_features(tt_robot_controller PUBLIC c_std_99 cxx_std_17)
+ament_target_dependencies(tt_robot_controller
+  rclcpp
+  sensor_msgs
+  moveit_ros_planning_interface
+  tf2_geometry_msgs
+)
+target_link_libraries(tt_robot_controller
+  ${Python3_LIBRARIES}
+)
 
 # Existing executable: move_program
 add_executable(move_program src/move_program.cpp)
@@ -97,8 +123,9 @@ ament_target_dependencies(
   "rclcpp"
 )
 
-# Install all executables (including tt_motion_rl_1)
+# Install targets
 install(TARGETS
+  tt_robot_controller
   move_program
   move_random
   rally_simulator
@@ -106,6 +133,17 @@ install(TARGETS
   tt_motion_hit
   tt_motion_rl
   tt_motion_rl_1
+  DESTINATION lib/${PROJECT_NAME}
+)
+
+# Install Python modules
+install(DIRECTORY
+  src/SMS_STS
+  DESTINATION lib/${PROJECT_NAME}
+)
+
+install(FILES
+  src/nema.py
   DESTINATION lib/${PROJECT_NAME}
 )
 

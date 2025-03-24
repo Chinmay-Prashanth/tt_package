@@ -21,9 +21,18 @@ const double TABLE_WIDTH = 1.525;       // Standard table tennis table width (me
 const double TABLE_HEIGHT = 0.76;       // Standard table tennis table height (meters)
 const double BALL_RADIUS = 0.02;        // Radius of a table tennis ball (meters)
 const double ROBOT_REACH = 0.8;         // Approximate reach of the robot arm (meters)
-const double RACKET_HANDLE = 0.11;      // Length of the racket handle (11 cm)
-const double RACKET_PADDLE = 0.15;      // Length of the paddle surface (15 cm)
-const double RACKET_TOTAL = 0.26;       // Total length of racket (26 cm)
+
+// Table coordinates
+const double TABLE_START_X = 0.1;      // Where the table starts on X axis
+const double TABLE_MIDPOINT_Y = 0.0;   // Midpoint of table on Y axis
+
+// Ball spawn range constants (proper range for robot to hit)
+const double BALL_SPAWN_X_MIN = 0.1;   // Minimum X for ball spawn
+const double BALL_SPAWN_X_MAX = 0.3;   // Maximum X for ball spawn
+const double BALL_SPAWN_Y_MIN = -0.8;  // Minimum Y for ball spawn
+const double BALL_SPAWN_Y_MAX = 0.8;   // Maximum Y for ball spawn
+const double BALL_SPAWN_Z_MIN = 0.1;   // Minimum Z for ball spawn
+const double BALL_SPAWN_Z_MAX = 0.4;   // Maximum Z for ball spawn
 
 // Target zone constants for scoring system
 const double TARGET_X = 2.0;            // Target X position (meters from robot toward server)
@@ -39,6 +48,18 @@ const double BALL_SPEED = 5.0;          // Average ball speed in m/s
 const double PRISMATIC_JOINT_MAX_VELOCITY = 1.2;  // m/s for NEMA 23 gantry belt driven linear actuator
 const double JOINT2_MAX_VELOCITY = 2.5;          // rad/s for NEMA 23 rotation
 const double ST3215_MAX_VELOCITY = 3.0;          // rad/s for ST3215 servo motors
+
+// Joint limits (radians for revolute joints, meters for prismatic)
+const double JOINT1_MIN = -0.5;  // Prismatic joint minimum (meters)
+const double JOINT1_MAX = 0.5;   // Prismatic joint maximum (meters)
+const double JOINT2_MIN = -M_PI; // Joint 2 minimum (-180 degrees)
+const double JOINT2_MAX = M_PI;  // Joint 2 maximum (+180 degrees)
+const double JOINT3_MIN = -0.2;  // Shoulder joint minimum
+const double JOINT3_MAX = 0.8;   // Shoulder joint maximum
+const double JOINT4_MIN = -1.2;  // Elbow joint minimum
+const double JOINT4_MAX = 0.2;   // Elbow joint maximum
+const double JOINT5_MIN = -0.6;  // Wrist joint minimum
+const double JOINT5_MAX = 0.6;   // Wrist joint maximum
 
 // Default joint values (neutral position)
 const std::vector<double> DEFAULT_JOINT_VALUES = {0.0, 0.0, 0.0, 0.0, 0.0};
@@ -120,10 +141,10 @@ public:
     {
         geometry_msgs::msg::Pose pose;
         
-        // Random position on robot's side (near origin)
-        std::uniform_real_distribution<double> x_dist(0.0, 0.2);    // Robot side (0 to 20cm from origin)
-        std::uniform_real_distribution<double> y_dist(-0.8, 0.8);   // -80cm to +80cm horizontally
-        std::uniform_real_distribution<double> z_dist(0.0, 0.5);    // 0 to 50cm vertically
+        // Random position within defined range for robot to hit
+        std::uniform_real_distribution<double> x_dist(BALL_SPAWN_X_MIN, BALL_SPAWN_X_MAX);
+        std::uniform_real_distribution<double> y_dist(BALL_SPAWN_Y_MIN, BALL_SPAWN_Y_MAX);
+        std::uniform_real_distribution<double> z_dist(BALL_SPAWN_Z_MIN, BALL_SPAWN_Z_MAX);
         
         pose.position.x = x_dist(gen_);
         pose.position.y = y_dist(gen_);
@@ -150,9 +171,6 @@ public:
         RCLCPP_INFO(this->get_logger(), 
             "Ball is already at: x=%.3f, y=%.3f, z=%.3f",
             serve_pose.position.x, serve_pose.position.y, serve_pose.position.z);
-        RCLCPP_INFO(this->get_logger(), 
-            "Racket has handle length of %.1f cm and paddle surface of %.1f cm (total %.1f cm)",
-            RACKET_HANDLE * 100, RACKET_PADDLE * 100, RACKET_TOTAL * 100);
             
         return serve_pose;
     }
@@ -165,13 +183,9 @@ public:
         // Set joint targets for ready position
         std::vector<double> joint_values = current_joint_values_;
         
-        // Calculate offset needed to account for racket
-        // The racket extends the reach of the robot, so we need to adjust the position
-        // to ensure the paddle hits the ball, not the end effector
-        
         // Move prismatic joint (jlink1) to align with ball's y position
-        // The range is -0.5 to 0.5, so clamp as needed
-        joint_values[0] = std::max(-0.4, std::min(0.4, ball_arrival_pose.position.y));
+        // Clamp within joint limits
+        joint_values[0] = std::max(JOINT1_MIN, std::min(JOINT1_MAX, ball_arrival_pose.position.y));
         
         // Set jlink2 (rotation) to face the correct side based on ball position
         // If ball is coming to left side, face left (-90°), otherwise face right (+90°)
@@ -183,20 +197,36 @@ public:
             RCLCPP_INFO(this->get_logger(), "Ball coming to right side - setting up for forehand");
         }
         
-        // Adjust joint positions to account for the racket offset
-        // We need to pull back the arm by the total racket length to ensure the paddle face hits the ball
-        double racket_adjustment = RACKET_TOTAL * 0.9; // Pull back by ~90% of total racket length
+        // Calculate appropriate angles for joints 3, 4, and 5 based on ball position
+        // These joints mimic human arm - shoulder, elbow, and wrist
+        double ball_height = ball_arrival_pose.position.z;
+        double ball_distance = ball_arrival_pose.position.x;
         
-        // Set jlink3 (main_arm), jlink4 (sub_arm), jlink5 (wrist) for a ready receiving position
-        // Adjust positions to account for the racket offset from the end effector
-        joint_values[2] = 0.1;                  // Main arm slightly lower to account for racket
-        joint_values[3] = -0.5 - racket_adjustment;  // Sub arm more bent to pull back for racket offset
-        joint_values[4] = 0.4;                  // Wrist adjusted for paddle face angle
+        // Normalize ball parameters for joint angle calculations (0.0 to 1.0)
+        double norm_height = (ball_height - BALL_SPAWN_Z_MIN) / (BALL_SPAWN_Z_MAX - BALL_SPAWN_Z_MIN);
+        double norm_distance = (ball_distance - BALL_SPAWN_X_MIN) / (BALL_SPAWN_X_MAX - BALL_SPAWN_X_MIN);
+        
+        // Joint 3 (shoulder) - higher for higher balls, lower for lower balls
+        // Map normalized height to joint range
+        joint_values[2] = JOINT3_MIN + norm_height * (JOINT3_MAX - JOINT3_MIN);
+        
+        // Joint 4 (elbow) - more bent for closer balls, straighter for farther balls
+        // Inverse relationship: closer balls = more negative angle (more bent)
+        joint_values[3] = JOINT4_MIN + norm_distance * (JOINT4_MAX - JOINT4_MIN);
+        
+        // Joint 5 (wrist) - adjust based on ball height for proper paddle angle
+        // Combine height and distance for natural wrist position
+        joint_values[4] = JOINT5_MIN + (norm_height * 0.7 + norm_distance * 0.3) * (JOINT5_MAX - JOINT5_MIN);
+        
+        // Ensure all joints are within limits
+        joint_values[0] = std::max(JOINT1_MIN, std::min(JOINT1_MAX, joint_values[0]));
+        joint_values[1] = std::max(JOINT2_MIN, std::min(JOINT2_MAX, joint_values[1]));
+        joint_values[2] = std::max(JOINT3_MIN, std::min(JOINT3_MAX, joint_values[2]));
+        joint_values[3] = std::max(JOINT4_MIN, std::min(JOINT4_MAX, joint_values[3]));
+        joint_values[4] = std::max(JOINT5_MIN, std::min(JOINT5_MAX, joint_values[4]));
         
         RCLCPP_INFO(this->get_logger(), "Setting joint targets for ready position: %f, %f, %f, %f, %f", 
             joint_values[0], joint_values[1], joint_values[2], joint_values[3], joint_values[4]);
-        RCLCPP_INFO(this->get_logger(), "Adjusting by %.1f cm to ensure ball hits paddle surface (total racket length %.1f cm)", 
-            racket_adjustment * 100, RACKET_TOTAL * 100);
         
         // Set the joint target
         try {
@@ -274,10 +304,6 @@ public:
         // Skill factor - reduces randomness (higher = more skilled)
         double skill_factor = 0.7;
         
-        // Consider racket offset in accuracy calculation - using a properly offset racket improves accuracy
-        RCLCPP_INFO(this->get_logger(), "Calculating ball landing with racket of %.1f cm total length", 
-            RACKET_TOTAL * 100);
-        
         // Calculate landing position with controlled randomness
         landing_point.x = x_dist(gen_) * skill_factor + TARGET_X * (1.0 - skill_factor);
         landing_point.y = y_dist(gen_) * (1.0 - y_accuracy_factor * skill_factor);
@@ -333,11 +359,6 @@ public:
         double backswing_angle, followthrough_angle;
         bool is_forehand = ball_arrival_pose.position.y >= 0;
         
-        // Calculate racket offset adjustment
-        // This ensures the paddle makes contact with the ball, not the end effector
-        // We want to hit with the paddle face which is past the handle
-        double racket_adjustment = RACKET_TOTAL * 0.85; // Use ~85% of total racket length for optimal contact point
-        
         // Determine if forehand or backhand based on ball y position
         if (!is_forehand) {
             // Ball on the left side (backhand for right-handed player)
@@ -349,24 +370,69 @@ public:
             followthrough_angle = FOREHAND_FOLLOWTHROUGH_ANGLE;
         }
         
-        RCLCPP_INFO(this->get_logger(), "Executing %s swing with racket adjustment of %.1f cm to hit with paddle surface",
-            is_forehand ? "forehand" : "backhand", racket_adjustment * 100);
+        RCLCPP_INFO(this->get_logger(), "Executing %s swing toward +X direction",
+            is_forehand ? "forehand" : "backhand");
+        
+        // Get ball height and distance
+        double ball_height = ball_arrival_pose.position.z;
+        double ball_distance = ball_arrival_pose.position.x;
+        
+        // Normalize ball parameters for joint angle calculations (0.0 to 1.0)
+        double norm_height = (ball_height - BALL_SPAWN_Z_MIN) / (BALL_SPAWN_Z_MAX - BALL_SPAWN_Z_MIN);
+        double norm_distance = (ball_distance - BALL_SPAWN_X_MIN) / (BALL_SPAWN_X_MAX - BALL_SPAWN_X_MIN);
         
         // Create backswing joint positions (preserve joint_1 position)
         std::vector<double> backswing_joint_values = current_joint_values_;
         backswing_joint_values[1] = backswing_angle;  // Rotate robot further back (±120 degrees)
-        backswing_joint_values[2] = 0.3;             // Main arm raised for backswing
-        backswing_joint_values[3] = -0.7 - racket_adjustment;  // Sub arm more bent to account for racket
-        backswing_joint_values[4] = 0.5;             // Wrist adjusted for backswing with racket
+        
+        // Adjust joint 3 (shoulder) for backswing - raise higher for higher balls
+        // Higher balls require more shoulder extension and higher positioning
+        backswing_joint_values[2] = JOINT3_MIN + (0.7 + norm_height * 0.3) * (JOINT3_MAX - JOINT3_MIN);
+        
+        // Adjust joint 4 (elbow) for backswing - bend more for backswing preparation
+        // More bent for closer balls, straighter for farther balls
+        backswing_joint_values[3] = JOINT4_MIN + (0.2 + norm_distance * 0.3) * (JOINT4_MAX - JOINT4_MIN);
+        
+        // Adjust joint 5 (wrist) for backswing - position paddle for impact
+        // Wrist cocked back more for higher balls
+        backswing_joint_values[4] = JOINT5_MIN + (0.6 + norm_height * 0.4) * (JOINT5_MAX - JOINT5_MIN);
         
         // Create follow-through joint positions (preserve joint_1 position)
         std::vector<double> followthrough_joint_values = current_joint_values_;
         followthrough_joint_values[1] = followthrough_angle;  // Rotate robot for follow-through (±30 degrees)
-        followthrough_joint_values[2] = 0.1;                 // Main arm extended forward
-        followthrough_joint_values[3] = -0.2 - racket_adjustment;  // Sub arm extended with racket adjustment
-        followthrough_joint_values[4] = -0.2;                // Wrist angled for follow-through
         
-        RCLCPP_INFO(this->get_logger(), "Executing backswing to angle %.2f degrees with 26 cm racket offset considered...", 
+        // Adjust joint 3 (shoulder) for follow-through - extend for power
+        // Lower shoulder position for power and follow-through
+        followthrough_joint_values[2] = JOINT3_MIN + (0.3 + norm_height * 0.4) * (JOINT3_MAX - JOINT3_MIN);
+        
+        // Adjust joint 4 (elbow) for follow-through - extend arm
+        // More extended for power in the hit
+        followthrough_joint_values[3] = JOINT4_MIN + (0.6 + norm_distance * 0.3) * (JOINT4_MAX - JOINT4_MIN);
+        
+        // Adjust joint 5 (wrist) for follow-through - angle for proper ball direction
+        // Wrist snaps through for power and direction
+        followthrough_joint_values[4] = JOINT5_MIN + (0.3 + norm_height * 0.2) * (JOINT5_MAX - JOINT5_MIN);
+        
+        // Ensure all joints are within limits
+        backswing_joint_values[1] = std::max(JOINT2_MIN, std::min(JOINT2_MAX, backswing_joint_values[1]));
+        backswing_joint_values[2] = std::max(JOINT3_MIN, std::min(JOINT3_MAX, backswing_joint_values[2]));
+        backswing_joint_values[3] = std::max(JOINT4_MIN, std::min(JOINT4_MAX, backswing_joint_values[3]));
+        backswing_joint_values[4] = std::max(JOINT5_MIN, std::min(JOINT5_MAX, backswing_joint_values[4]));
+        
+        followthrough_joint_values[1] = std::max(JOINT2_MIN, std::min(JOINT2_MAX, followthrough_joint_values[1]));
+        followthrough_joint_values[2] = std::max(JOINT3_MIN, std::min(JOINT3_MAX, followthrough_joint_values[2]));
+        followthrough_joint_values[3] = std::max(JOINT4_MIN, std::min(JOINT4_MAX, followthrough_joint_values[3]));
+        followthrough_joint_values[4] = std::max(JOINT5_MIN, std::min(JOINT5_MAX, followthrough_joint_values[4]));
+        
+        RCLCPP_INFO(this->get_logger(), "Backswing joint values: %f, %f, %f, %f, %f",
+            backswing_joint_values[0], backswing_joint_values[1], backswing_joint_values[2], 
+            backswing_joint_values[3], backswing_joint_values[4]);
+            
+        RCLCPP_INFO(this->get_logger(), "Followthrough joint values: %f, %f, %f, %f, %f",
+            followthrough_joint_values[0], followthrough_joint_values[1], followthrough_joint_values[2], 
+            followthrough_joint_values[3], followthrough_joint_values[4]);
+        
+        RCLCPP_INFO(this->get_logger(), "Executing backswing to angle %.2f degrees...", 
             backswing_angle * 180.0 / M_PI);
         
         // Execute backswing

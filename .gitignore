@@ -1,12 +1,26 @@
-# ROS2 build and install
+# ROS2 build directories
 build/
 install/
 log/
 
-# Python
+# Python cache files
 __pycache__/
 *.py[cod]
 *$py.class
+
+# IDE specific files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# System files
+.DS_Store
+Thumbs.db
+
+# ROS2 specific
+*.db
+*.db-*
 
 # Model weights
 *.pt
